@@ -1,0 +1,31 @@
+export const packageOptions=[
+ {id:'dplyr',description:'filter, select, arrange, mutate, group_by og summarise'},
+ {id:'jsonlite',description:'fromJSON og flatten som i OpenSky-filerne'},
+ {id:'stringr',description:'str_c, str_detect og str_extract'},
+ {id:'tidyr',description:'pivot_wider som i Mikroindikator'},
+ {id:'ggplot2',description:'Læs og forstå plotkode fra undervisningen'}
+];
+export function enabledExercises(exercises,selected=[]){return exercises.filter(e=>(e.packages||[]).every(p=>selected.includes(p)));}
+export function normalizePackages(value){return packageOptions.map(p=>p.id).filter(p=>Array.isArray(value)&&value.includes(p));}
+export const packageExercises=[];
+const car='biler <- mtcars';
+function add(id,topic,title,prompt,solution,packages,{setup=car,source='Eksamensøvning/Eksamenstræningsopgaver - Svar.R',...extra}={}){
+ packageExercises.push({id,topic,title,prompt,solution,packages,setup:packages.map(p=>`library(${p})`).join('\n')+'\n'+setup,source,kind:'code',starter:'# Skriv din løsning her\n',hint:'Brug funktionerne fra de tilvalgte pakker.',explanation:'Samme funktioner og fremgangsmåde som i dit materiale; dataene er lokale øvedata.',level:2,check:null,...extra});
+}
+add('pkg-filter','filter','dplyr · udvælg cylindre','Brug filter() til at returnere biler med 4 eller 8 cylindre.','filter(biler, cyl %in% c(4, 8))',['dplyr'],{hint:'filter(biler, cyl %in% c(4, 8)).'});
+add('pkg-select','frames','dplyr · vælg kolonner','Brug select() til at returnere mpg, hp, wt og cyl i denne rækkefølge.','select(biler, mpg, hp, wt, cyl)',['dplyr'],{hint:'Kolonnenavnene skrives efter datasættet, adskilt af komma.'});
+add('pkg-arrange','filter','dplyr · faldende sortering','Brug arrange() og desc() til at sortere alle biler efter hp fra højest til lavest.','arrange(biler, desc(hp))',['dplyr']);
+add('pkg-mutate','frames','dplyr · omregn hestekræfter','Returnér biler med en ny hp_kw-kolonne: hp gange 0.7457. Brug mutate().','biler |> mutate(hp_kw = hp * 0.7457)',['dplyr'],{hint:'biler |> mutate(nyt_navn = beregning).'});
+add('pkg-rename','frames','dplyr · omdøb en kolonne','Brug rename() til at omdøbe kolonnen kode til operator.','rename(fly, operator = kode)',['dplyr'],{setup:'fly <- data.frame(kode = c("SAS", "DLH"), land = c("DK", "DE"))',source:'OpenSky/GetPlanes.R',hint:'rename(data, nyt_navn = gammelt_navn).'});
+add('pkg-group','stats','dplyr · spredning pr. område','Gruppér kommuner efter OMRÅDE og returnér standardafvigelsen af value i kolonnen spredning. Ignorér NA. Brug group_by() og summarise().','kommuner |> group_by(OMRÅDE) |> summarise(spredning = sd(value, na.rm = TRUE))',['dplyr'],{setup:'kommuner <- data.frame(OMRÅDE = c("A", "A", "B", "B"), value = c(28, 30, 31, 35))',source:'Uge 40/Mandag.R'});
+add('pkg-json','frames','jsonlite · læs JSON','Opret currentJS ved at læse JSON-teksten current med fromJSON().','currentJS <- fromJSON(current)',['jsonlite'],{setup:'current <- \'{"time":1700000000,"land":"Denmark"}\'',source:'OpenSky/FlyIBox.R',hint:'fromJSON() får selve JSON-teksten som argument.'});
+// Assignment checks inspect the created object, just as in the base-R tasks.
+packageExercises.find(e=>e.id==='pkg-json').check='identical(currentJS, jsonlite::fromJSON(current))';
+add('pkg-json-flat','frames','jsonlite · flad JSON ud','Returnér et data frame fra JSON-teksten tyk2. Brug fromJSON(..., flatten = TRUE) og as.data.frame().','as.data.frame(fromJSON(tyk2, flatten = TRUE))',['jsonlite'],{setup:'tyk2 <- \'[{"position":{"alt":7200},"callsign":"SAS123"},{"position":{"alt":8100},"callsign":"DLH456"}]\'',source:'OpenSky/GetPlanes.R'});
+add('pkg-str-c','functions','stringr · byg en hilsen','Brug str_c() til at returnere "Hej Lasse Jensen" ud fra navn og efternavn.','str_c("Hej", " ", navn, " ", efternavn)',['stringr'],{setup:'navn <- "Lasse"\nefternavn <- "Jensen"',source:'OpenSky/gethilsen.R',hint:'str_c() sætter tekststykker sammen. Mellemrum angives som " ".'});
+add('pkg-str-detect','vectors','stringr · find tekst','Brug str_detect() til at returnere en logisk vektor, der markerer titler med Gas eller gas.','str_detect(title, "Gas|gas")',['stringr'],{setup:'title <- c("Gas prices", "Electricity", "Natural gas")',source:'EuroStat/EuroStat.R',hint:'Mønstret "Gas|gas" matcher de to stavemåder.'});
+add('pkg-str-extract','vectors','stringr · træk bogstaver ud','Brug str_extract() og mønstret [A-Z]+ til at returnere bogstavdelen af callsign.','str_extract(callsign, "[A-Z]+")',['stringr'],{setup:'callsign <- c("SAS123", "DLH456", "AFR789")',source:'OpenSky/GetPlanes.R'});
+add('pkg-combined','filter','dplyr + stringr · filtrér fly','Returnér rækker fra currentDF, hvor origin_country indeholder Iraq. Brug filter() sammen med str_detect().','currentDF |> filter(str_detect(origin_country, "Iraq"))',['dplyr','stringr'],{setup:'currentDF <- data.frame(callsign = c("A1", "B2", "C3"), origin_country = c("Iraq", "Denmark", "Iraq"))',source:'OpenSky/GetPlanes.R'});
+add('pkg-wider','frames','tidyr · fra lang til bred','Brug pivot_wider(): TID er id_cols, INDIKATOR er names_from og value er values_from.','pivot_wider(forventninger, id_cols = TID, names_from = INDIKATOR, values_from = value)',['tidyr'],{setup:'forventninger <- data.frame(TID = c("2024K1", "2024K1", "2024K2", "2024K2"), INDIKATOR = c("A", "B", "A", "B"), value = c(10, 20, 11, 21))',source:'Mikroindikator/Mikroindikator.R'});
+add('pkg-plot-line','simulation','ggplot2 · læs et linjeplot','Hvilken funktion i koden tegner linjerne?','geom_line()',['ggplot2'],{setup:'ggplot(kommuner, aes(x = TID, y = value, colour = OMRÅDE, group = OMRÅDE)) + geom_line()',source:'Uge 40/Mandag.R',kind:'choice',options:['geom_line()','aes()','ggplot()','labs()'],answer:0,hint:'geom-funktionen bestemmer, hvordan observationerne tegnes.'});
+add('pkg-plot-box','stats','ggplot2 · genkend et boksplot','Hvad tegner denne kode?','Et boksplot af price',['ggplot2'],{setup:'ggplot(dfbilbaseSub, aes(price)) + geom_boxplot()',source:'DALEW36/Onsdag.R',kind:'choice',options:['Et boksplot af price','Et linjediagram','En frekvenstabel','En regressionsmodel'],answer:0,hint:'geom_boxplot() viser fordelingens median, kvartiler og mulige outliers.'});

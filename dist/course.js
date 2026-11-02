@@ -1,3 +1,4 @@
+import {packageExercises} from './packages.js';
 import {addExamSheetExercises} from './exam-sheet.js';
 import {courseEvidence} from './course-evidence.js';
 export const topics = [
@@ -61,6 +62,7 @@ add('m-r2','simulation','Forklaringsgrad','Returnér R² for den klargjorte mode
 add('m-merge','simulation','Saml data på kvartal','Returnér de to datasæt sammenkoblet på kvartal. Behold kun fælles kvartaler og kolonnerne kvartal, forbrug, tillid.','merge(forbrug, tillid, by = "kvartal")',{source:'macro',level:3,setup:'forbrug <- data.frame(kvartal = c("2024K1", "2024K2", "2024K3"), forbrug = c(100, 104, 106))\ntillid <- data.frame(kvartal = c("2024K1", "2024K2"), tillid = c(-5, -2))',hint:'merge() udfører som standard et inner join på den angivne nøgle.'});
 
 addExamSheetExercises(add);
+exercises.push(...packageExercises);
 
 for (const ex of exercises) {
  ex.evidence=courseEvidence[ex.id]||{};

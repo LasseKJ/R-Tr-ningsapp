@@ -80,3 +80,9 @@ Opgaverne med `cor()` og `combn()` er fjernet, da funktionerne kun fandtes i OLA
 ## Hele eksamensarket
 
 Opgavebiblioteket har en tjekliste med samtlige 31 spørgsmål/delspørgsmål fra `Eksamenstræningsopgaver - Svar.R`: 1.1–5.4, seks beskrivende mål og den ekstra kvartilopgave. `dist/exam-sheet.js` kobler hvert spørgsmål til øvelser og tilføjer 21 nye øvelser. Under 1.2 trænes både struktur, klasse og interne datatyper. Tidligere øvelses-id’er og brugerhistorik bevares. `tests/exam-sheet.test.mjs` kontrollerer fuld dækning.
+
+## Valgfri pakketræning
+
+Menuen øverst til højre tilvælger dplyr, jsonlite, stringr, tidyr og ggplot2 uafhængigt. De 68 base-R-øvelser er altid tilgængelige, og der er 15 ekstra pakkeøvelser. Kombinationer kræver alle relevante tilvalg. Valgene gemmes med fremskridtene, også på profilen. Prøveudvælgelse følger de aktive pakker, og pakkevalg låses under en aktiv prøve.
+
+Pakkeøvelsernes funktioner og argumenter er hentet fra filer uden OLA. JSON og API-relaterede opgaver bruger små lokale, syntetiske data uden netværksadgang eller adgangsoplysninger. WebR henter nødvendige pakker ved første kodekørsel. ggplot2-opgaverne træner læsning og forståelse af plotkode. str() er base R; str_c(), str_detect() og str_extract() er stringr.

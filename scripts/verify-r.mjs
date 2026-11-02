@@ -9,6 +9,7 @@ const check=code=>r.evalRBoolean(code,{captureStreams:true});
 let passed=0;
 try{
  for(const ex of [...exercises,...Array.from({length:16},(_,i)=>makeVariant(i))].filter(e=>!['choice','output'].includes(e.kind))){
+  if(ex.packages?.length)await r.installPackages(ex.packages);
   const result=await check(buildProgram(ex,ex.solution));assert.equal(result,true,`Solution rejected: ${ex.id}`);
   const wrong=await check(buildProgram(ex,'NULL'));assert.equal(wrong,false,`Empty solution accepted: ${ex.id}`);passed++;
  }
