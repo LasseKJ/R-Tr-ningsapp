@@ -1,0 +1,17 @@
+name: Check R Lab
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --check dist/app.js && node --check dist/engine.js
+      - run: node --test tests/*.test.mjs
+      - run: npm install --no-save --ignore-scripts webr@0.6.0
+      - run: node scripts/verify-r.mjs
