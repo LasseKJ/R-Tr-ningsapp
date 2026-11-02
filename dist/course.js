@@ -1,3 +1,4 @@
+import {courseEvidence} from './course-evidence.js';
 export const topics = [
  {id:'vectors',name:'Vektorer & typer',icon:'[ ]',description:'Byg dit fundament med værdier, sekvenser og indeksering.'},
  {id:'frames',name:'Data frames',icon:'▦',description:'Lær dine data at kende. Udvælg rækker og kolonner.'},
@@ -6,12 +7,12 @@ export const topics = [
  {id:'stats',name:'Statistik & NA',icon:'σ',description:'Rens data, opsummér og sammenlign grupper.'},
  {id:'simulation',name:'Simulation & modeller',icon:'⌁',description:'Fra terningekast til regression og kvartalsdata.'}
 ];
-const sources={intro:'DALE26W35/Torsdag.R',list:'DALEW36/Pair Programming - Mandag.R',exam:'Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R',clean:'DALEW36/Onsdag.R',loops:'Uge37/PairProgrammering10/PairProgramming1009.R',dice:'OLA-1/OLA-1.R',model:'OLA 3/OLA 3.R',macro:'Mikroindikator/Mikroindikator.R'};
+const sources={intro:'DALE26W35/Torsdag.R',list:'DALEW36/Pair Programming - Mandag.R',exam:'Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R',clean:'DALEW36/Onsdag.R',loops:'Uge37/PairProgrammering10/PairProgramming1009.R',dice:'Terning/dice.R',model:'Mikroindikator/Mikroindikator.R',macro:'Mikroindikator/Mikroindikator.R'};
 const car='biler <- mtcars';
 export const exercises=[];
 function add(id,topic,title,prompt,solution,{setup='',hint='',explanation='',level=1,source='exam',starter='# Skriv din løsning her\n',check=null,kind='code',options=null,answer=null}={}){exercises.push({id,topic,title,prompt,solution,setup,hint,explanation:explanation||hint,level,source:sources[source],starter,check,kind,options,answer});}
 add('v-seq','vectors','En vektor med alder','Opret objektet alder med heltallene fra 15 til 50.','alder <- seq(15, 50)',{source:'intro',hint:'seq(fra, til) eller operatoren : laver en sekvens.',check:'isTRUE(all.equal(alder, 15:50))'});
-add('v-income','vectors','Indkomst i faste trin','Opret indkomst: start ved 10000, stig med 5000, og lav 36 værdier.','indkomst <- seq(10000, by = 5000, length.out = 36)',{source:'intro',hint:'seq() har argumenterne by og length.out.',check:'isTRUE(all.equal(indkomst, seq(10000, by=5000, length.out=36)))'});
+add('v-income','vectors','Indkomst i faste trin','Opret indkomst: start ved 10000, stig med 5000, og lav 36 værdier.','indkomst <- seq(10000, 185000, 5000)',{source:'intro',hint:'Brug seq(start, slut, trin). Slutværdien er 185000.',check:'isTRUE(all.equal(indkomst, seq(10000, 185000, 5000)))'});
 add('v-types','vectors','Hvilken datatype?','Hvad returnerer typeof(x)?','"character"',{source:'list',kind:'choice',setup:'x <- c(2L, "5", TRUE)',options:['integer','double','character','logical'],answer:2,hint:'En vektor har én fælles datatype.',explanation:'Tekst får de øvrige værdier til at blive konverteret til character.'});
 add('v-index','vectors','Hver anden værdi','Udvælg position 1, 3 og 5 fra x. Lad resultatet være dit sidste udtryk.','x[c(1, 3, 5)]',{source:'list',setup:'x <- c(4, 9, 2, 15, 7, 12)',hint:'Indeks angiver positioner, ikke værdier.'});
 add('v-logic','vectors','Læs en logisk vektor','Hvilke værdier returnerer koden? Skriv værdierne adskilt af mellemrum.','9 15 12',{source:'list',kind:'output',setup:'x <- c(4, 9, 2, 15, 7, 12)\nx[x > 7]',hint:'Kun positioner med TRUE bliver udvalgt.',answer:'9 15 12'});
@@ -22,7 +23,7 @@ add('d-head','frames','Mød dit datasæt','Returnér de første 6 rækker af bil
 add('d-dim','frames','Rækker og kolonner','Returnér en vektor med antal rækker og antal kolonner i denne rækkefølge.','dim(biler)',{setup:car,hint:'dim() returnerer begge dimensioner.'});
 add('d-column','frames','Hent en kolonne','Returnér mpg som en numerisk vektor.','biler$mpg',{setup:car,hint:'$ henter en navngiven kolonne.'});
 add('d-select','frames','To kolonner, alle biler','Returnér et data frame med mpg og hp i den rækkefølge.','biler[, c("mpg", "hp")]',{setup:car,hint:'Formatet er data[rækker, kolonner]. Et tomt felt før komma vælger alle rækker.'});
-add('d-last','frames','Den sidste observation','Returnér den sidste række som et data frame.','biler[nrow(biler), , drop = FALSE]',{setup:car,hint:'nrow(biler) giver rækkenummeret på den sidste observation.'});
+add('d-last','frames','Den sidste observation','Returnér den sidste række som et data frame.','biler[nrow(biler), ]',{setup:car,hint:'nrow(biler) giver rækkenummeret på den sidste observation.'});
 add('d-kw','frames','Fra hestekræfter til kW','Tilføj hp_kw til biler. Brug kW = hp × 0.7457.','biler$hp_kw <- biler$hp * 0.7457',{setup:car,hint:'En ny kolonne kan tildeles med biler$navn <- ...',check:'isTRUE(all.equal(biler$hp_kw, mtcars$hp * 0.7457))'});
 add('d-weight','frames','Fra pund til kilogram','Tilføj weight_kg til biler. wt er i 1000 pund. Ét pund er 0.453592 kg.','biler$weight_kg <- biler$wt * 1000 * 0.453592',{setup:car,hint:'Husk begge faktorer: 1000 og 0.453592.',check:'isTRUE(all.equal(biler$weight_kg, mtcars$wt * 1000 * 0.453592))'});
 add('d-drop','frames','Fravælg kolonner','Returnér biler uden disp og carb. Bevar rækkefølgen af de øvrige kolonner.','biler[, !names(biler) %in% c("disp", "carb")]',{setup:car,level:2,hint:'names(), %in% og ! kan bruges til at vælge de øvrige kolonner.'});
@@ -56,15 +57,19 @@ add('m-quarter','simulation','Fra måneder til kvartaler','Returnér kvartalsnum
 add('m-growth','simulation','Årlig vækst','Returnér procentvis vækst fra foer til nu for hvert par.','(nu / foer - 1) * 100',{source:'macro',setup:'foer <- c(100, 200, 80)\nnu <- c(105, 190, 88)',level:2,hint:'Procentvis vækst er (ny / gammel − 1) × 100.'});
 add('m-lm','simulation','Din første regressionsmodel','Opret model med mpg som respons og wt som forklarende variabel fra biler.','model <- lm(mpg ~ wt, data = biler)',{setup:car,source:'model',level:3,hint:'lm(y ~ x, data = ...) tilpasser en lineær model.',check:'inherits(model, "lm") && isTRUE(all.equal(coef(model), coef(lm(mpg ~ wt, data=mtcars))))'});
 add('m-r2','simulation','Forklaringsgrad','Returnér R² for den klargjorte model.','summary(model)$r.squared',{setup:'model <- lm(mpg ~ wt, data = mtcars)',source:'model',level:3,hint:'summary(model) indeholder r.squared.'});
-add('m-cor','simulation','Sammenhæng mellem to variable','Returnér korrelationen mellem mpg og wt.','cor(biler$mpg, biler$wt)',{setup:car,source:'model',level:2,hint:'cor(x, y) beregner som standard Pearson-korrelation.'});
-add('m-combn','simulation','Alle kombinationer','Returnér alle kombinationer af 2 tal fra 1:4 som en matrix med én kombination pr. kolonne.','combn(1:4, 2)',{source:'model',level:3,hint:'combn(x, m) laver kombinationer med m elementer.'});
 add('m-merge','simulation','Saml data på kvartal','Returnér de to datasæt sammenkoblet på kvartal. Behold kun fælles kvartaler og kolonnerne kvartal, forbrug, tillid.','merge(forbrug, tillid, by = "kvartal")',{source:'macro',level:3,setup:'forbrug <- data.frame(kvartal = c("2024K1", "2024K2", "2024K3"), forbrug = c(100, 104, 106))\ntillid <- data.frame(kvartal = c("2024K1", "2024K2"), tillid = c(-5, -2))',hint:'merge() udfører som standard et inner join på den angivne nøgle.'});
+
+for (const ex of exercises) {
+ ex.evidence=courseEvidence[ex.id]||{};
+ const paths=[...new Set(Object.values(ex.evidence).flat())];
+ if(paths.length)ex.source=paths.join(' · ');
+}
 
 export function makeVariant(seed=Date.now()) {
  const n=Math.abs(Number(seed))%100000; const threshold=100+(n%12)*10;
  const templates=[
   {topic:'filter',title:'Nye data · filtrér hestekræfter',setup:car,prompt:`Returnér biler med mere end ${threshold} hp.`,solution:`biler[biler$hp > ${threshold}, ]`,hint:'Brug logisk indeksering og operatoren >.',level:2},
-  {topic:'vectors',title:'Nye data · en sekvens',setup:'',prompt:`Opret x med 8 værdier fra ${n%20+3} i trin på ${n%5+2}.`,solution:`x <- seq(${n%20+3}, by=${n%5+2}, length.out=8)`,check:`isTRUE(all.equal(x, seq(${n%20+3}, by=${n%5+2}, length.out=8)))`,hint:'seq(start, by = ..., length.out = ...).',level:1},
+  {topic:'vectors',title:'Nye data · en sekvens',setup:'',prompt:`Opret x med 8 værdier fra ${n%20+3} i trin på ${n%5+2}.`,solution:`x <- seq(${n%20+3}, ${n%20+3+7*(n%5+2)}, ${n%5+2})`,check:`isTRUE(all.equal(x, seq(${n%20+3}, by=${n%5+2}, length.out=8)))`,hint:'seq(start, slut, trin).',level:1},
   {topic:'stats',title:'Nye data · håndtér NA',setup:`x <- c(${n%13+2}, NA, ${n%17+4}, ${n%9+3}, NA)`,prompt:'Returnér gennemsnittet af de kendte værdier.',solution:'mean(x, na.rm = TRUE)',hint:'Husk na.rm = TRUE.',level:1},
   {topic:'functions',title:'Nye data · en omregner',setup:'',prompt:`Skriv funktionen omregn(x), som ganger en numerisk vektor med ${n%8+2} og lægger ${n%11+1} til.`,solution:`omregn <- function(x) x * ${n%8+2} + ${n%11+1}`,check:`is.function(omregn) && isTRUE(all.equal(omregn(c(-2,0,1,5)), c(-2,0,1,5) * ${n%8+2} + ${n%11+1}))`,hint:'En funktion kan arbejde direkte på en hel vektor.',level:2}
  ];

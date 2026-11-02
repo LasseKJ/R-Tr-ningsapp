@@ -1,0 +1,1115 @@
+{
+  "excluded": "All directory names beginning with OLA, case-insensitive, including nested folders",
+  "files": [
+    "02-11-2026 Tavle undervisning.R",
+    "DALE26W35/Fredag.R",
+    "DALE26W35/Torsdag.R",
+    "DALE26W38/Tirsdag.R",
+    "DALEW36/Benchmark.R",
+    "DALEW36/EstoniaFil.R",
+    "DALEW36/Liste.R",
+    "DALEW36/Mandag - Playing Cards.R",
+    "DALEW36/myRounder.R",
+    "DALEW36/Onsdag.R",
+    "DALEW36/Pair Programming - Mandag.R",
+    "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+    "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+    "EuroStat/EuroStat.R",
+    "fredag2/fredag2.R",
+    "Mikroindikator/Mikroindikator.R",
+    "OpenSky/FlyIBox.R",
+    "OpenSky/gethilsen.R",
+    "OpenSky/GetPlanes.R",
+    "OpenSky/Main.R",
+    "OpenSky/util.R",
+    "Terning/dice.R",
+    "Uge 40/Mandag.R",
+    "Uge37/PairProgrammering10/PairProgramming1009.R",
+    "Uge37/Test/hej.R",
+    "Uge37/Test/Terning.R",
+    "util.r"
+  ],
+  "functions": {
+    "length": [
+      "02-11-2026 Tavle undervisning.R",
+      "DALEW36/Pair Programming - Mandag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/GetPlanes.R"
+    ],
+    "c": [
+      "02-11-2026 Tavle undervisning.R",
+      "DALE26W35/Fredag.R",
+      "DALE26W38/Tirsdag.R",
+      "DALEW36/EstoniaFil.R",
+      "DALEW36/Mandag - Playing Cards.R",
+      "DALEW36/Pair Programming - Mandag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/GetPlanes.R",
+      "Uge 40/Mandag.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ],
+    "summary": [
+      "02-11-2026 Tavle undervisning.R",
+      "DALEW36/Onsdag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/GetPlanes.R"
+    ],
+    "sd": [
+      "02-11-2026 Tavle undervisning.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "OpenSky/GetPlanes.R",
+      "Uge 40/Mandag.R"
+    ],
+    "function": [
+      "DALE26W35/Torsdag.R",
+      "DALEW36/EstoniaFil.R",
+      "DALEW36/myRounder.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/gethilsen.R",
+      "OpenSky/util.R",
+      "Terning/dice.R",
+      "Uge37/Test/Terning.R",
+      "util.r"
+    ],
+    "list": [
+      "DALE26W38/Tirsdag.R",
+      "DALEW36/EstoniaFil.R",
+      "DALEW36/Liste.R",
+      "DALEW36/Pair Programming - Mandag.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/util.R",
+      "Uge 40/Mandag.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R",
+      "util.r"
+    ],
+    "mean": [
+      "DALEW36/Benchmark.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ],
+    "table": [
+      "DALEW36/EstoniaFil.R"
+    ],
+    "sum": [
+      "DALEW36/EstoniaFil.R",
+      "DALEW36/Onsdag.R",
+      "Mikroindikator/Mikroindikator.R",
+      "Terning/dice.R",
+      "Uge37/Test/Terning.R"
+    ],
+    "sapply": [
+      "DALEW36/EstoniaFil.R"
+    ],
+    "data.frame": [
+      "DALEW36/Mandag - Playing Cards.R",
+      "DALEW36/Pair Programming - Mandag.R",
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "head": [
+      "DALEW36/Mandag - Playing Cards.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ],
+    "is.na": [
+      "DALEW36/Onsdag.R",
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "names": [
+      "DALEW36/Pair Programming - Mandag.R",
+      "Mikroindikator/Mikroindikator.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ],
+    "matrix": [
+      "DALEW36/Pair Programming - Mandag.R"
+    ],
+    "nrow": [
+      "DALEW36/Pair Programming - Mandag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ],
+    "dim": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ],
+    "order": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "ceiling": [
+      "fredag2/fredag2.R"
+    ],
+    "aggregate": [
+      "fredag2/fredag2.R"
+    ],
+    "for": [
+      "Mikroindikator/Mikroindikator.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ],
+    "merge": [
+      "Mikroindikator/Mikroindikator.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ],
+    "lm": [
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "ifelse": [
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "seq": [
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "sample": [
+      "Terning/dice.R",
+      "Uge37/Test/Terning.R"
+    ],
+    "replicate": [
+      "Terning/dice.R",
+      "Uge37/Test/Terning.R"
+    ]
+  },
+  "exercises": [
+    {
+      "id": "v-seq",
+      "functions": [
+        "seq"
+      ],
+      "evidence": {
+        "seq": [
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "v-income",
+      "functions": [
+        "seq"
+      ],
+      "evidence": {
+        "seq": [
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "v-types",
+      "functions": [
+        "c"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "v-index",
+      "functions": [
+        "c"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "v-logic",
+      "functions": [
+        "c"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "v-matrix",
+      "functions": [
+        "matrix"
+      ],
+      "evidence": {
+        "matrix": [
+          "DALEW36/Pair Programming - Mandag.R"
+        ]
+      }
+    },
+    {
+      "id": "v-list",
+      "functions": [
+        "list",
+        "c"
+      ],
+      "evidence": {
+        "list": [
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Liste.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/util.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R",
+          "util.r"
+        ],
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "v-brackets",
+      "functions": [
+        "list",
+        "length"
+      ],
+      "evidence": {
+        "list": [
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Liste.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/util.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R",
+          "util.r"
+        ],
+        "length": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R"
+        ]
+      }
+    },
+    {
+      "id": "d-head",
+      "functions": [
+        "head"
+      ],
+      "evidence": {
+        "head": [
+          "DALEW36/Mandag - Playing Cards.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+        ]
+      }
+    },
+    {
+      "id": "d-dim",
+      "functions": [
+        "dim"
+      ],
+      "evidence": {
+        "dim": [
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+        ]
+      }
+    },
+    {
+      "id": "d-column",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "d-select",
+      "functions": [
+        "c"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "d-last",
+      "functions": [
+        "nrow"
+      ],
+      "evidence": {
+        "nrow": [
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "d-kw",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "d-weight",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "d-drop",
+      "functions": [
+        "names",
+        "c"
+      ],
+      "evidence": {
+        "names": [
+          "DALEW36/Pair Programming - Mandag.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "f-hp",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "f-cyl",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "f-and",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "f-or",
+      "functions": [
+        "c"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "f-sort",
+      "functions": [
+        "order"
+      ],
+      "evidence": {
+        "order": [
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "f-top",
+      "functions": [
+        "head",
+        "order"
+      ],
+      "evidence": {
+        "head": [
+          "DALEW36/Mandag - Playing Cards.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+        ],
+        "order": [
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "f-debug",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "f-empty",
+      "functions": [
+        "nrow"
+      ],
+      "evidence": {
+        "nrow": [
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "u-temp",
+      "functions": [
+        "function"
+      ],
+      "evidence": {
+        "function": [
+          "DALE26W35/Torsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/myRounder.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/gethilsen.R",
+          "OpenSky/util.R",
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R",
+          "util.r"
+        ]
+      }
+    },
+    {
+      "id": "u-inches",
+      "functions": [
+        "function"
+      ],
+      "evidence": {
+        "function": [
+          "DALE26W35/Torsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/myRounder.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/gethilsen.R",
+          "OpenSky/util.R",
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R",
+          "util.r"
+        ]
+      }
+    },
+    {
+      "id": "u-loop",
+      "functions": [
+        "c",
+        "for"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "for": [
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "u-vector",
+      "functions": [
+        "c",
+        "mean"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "mean": [
+          "DALEW36/Benchmark.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "u-ifelse",
+      "functions": [
+        "c",
+        "ifelse"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "ifelse": [
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "u-apply",
+      "functions": [
+        "list",
+        "c",
+        "sapply"
+      ],
+      "evidence": {
+        "list": [
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Liste.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/util.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R",
+          "util.r"
+        ],
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "sapply": [
+          "DALEW36/EstoniaFil.R"
+        ]
+      }
+    },
+    {
+      "id": "s-mean",
+      "functions": [
+        "mean"
+      ],
+      "evidence": {
+        "mean": [
+          "DALEW36/Benchmark.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "s-na",
+      "functions": [
+        "c",
+        "mean"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "mean": [
+          "DALEW36/Benchmark.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "s-count",
+      "functions": [
+        "c",
+        "sum",
+        "is.na"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "sum": [
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Onsdag.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R"
+        ],
+        "is.na": [
+          "DALEW36/Onsdag.R",
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "s-clean",
+      "functions": [
+        "data.frame",
+        "c",
+        "is.na"
+      ],
+      "evidence": {
+        "data.frame": [
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Mikroindikator/Mikroindikator.R"
+        ],
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "is.na": [
+          "DALEW36/Onsdag.R",
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "s-sd",
+      "functions": [
+        "c",
+        "sd"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "sd": [
+          "02-11-2026 Tavle undervisning.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R"
+        ]
+      }
+    },
+    {
+      "id": "s-group",
+      "functions": [
+        "aggregate"
+      ],
+      "evidence": {
+        "aggregate": [
+          "fredag2/fredag2.R"
+        ]
+      }
+    },
+    {
+      "id": "s-table",
+      "functions": [
+        "table"
+      ],
+      "evidence": {
+        "table": [
+          "DALEW36/EstoniaFil.R"
+        ]
+      }
+    },
+    {
+      "id": "s-na-debug",
+      "functions": [
+        "c",
+        "is.na"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "is.na": [
+          "DALEW36/Onsdag.R",
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "m-dice",
+      "functions": [
+        "sample"
+      ],
+      "evidence": {
+        "sample": [
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R"
+        ]
+      }
+    },
+    {
+      "id": "m-prob",
+      "functions": [
+        "c",
+        "mean"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "mean": [
+          "DALEW36/Benchmark.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "m-replicate",
+      "functions": [
+        "replicate",
+        "sum",
+        "sample"
+      ],
+      "evidence": {
+        "replicate": [
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R"
+        ],
+        "sum": [
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Onsdag.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R"
+        ],
+        "sample": [
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R"
+        ]
+      }
+    },
+    {
+      "id": "m-seed",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "m-quarter",
+      "functions": [
+        "ceiling"
+      ],
+      "evidence": {
+        "ceiling": [
+          "fredag2/fredag2.R"
+        ]
+      }
+    },
+    {
+      "id": "m-growth",
+      "functions": [
+        "c"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "m-lm",
+      "functions": [
+        "lm"
+      ],
+      "evidence": {
+        "lm": [
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "m-r2",
+      "functions": [
+        "lm",
+        "summary"
+      ],
+      "evidence": {
+        "lm": [
+          "Mikroindikator/Mikroindikator.R"
+        ],
+        "summary": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALEW36/Onsdag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R"
+        ]
+      }
+    },
+    {
+      "id": "m-merge",
+      "functions": [
+        "data.frame",
+        "c",
+        "merge"
+      ],
+      "evidence": {
+        "data.frame": [
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Mikroindikator/Mikroindikator.R"
+        ],
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "merge": [
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "variant-0",
+      "functions": [],
+      "evidence": {}
+    },
+    {
+      "id": "variant-1",
+      "functions": [
+        "seq"
+      ],
+      "evidence": {
+        "seq": [
+          "Mikroindikator/Mikroindikator.R"
+        ]
+      }
+    },
+    {
+      "id": "variant-2",
+      "functions": [
+        "c",
+        "mean"
+      ],
+      "evidence": {
+        "c": [
+          "02-11-2026 Tavle undervisning.R",
+          "DALE26W35/Fredag.R",
+          "DALE26W38/Tirsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/Mandag - Playing Cards.R",
+          "DALEW36/Pair Programming - Mandag.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/GetPlanes.R",
+          "Uge 40/Mandag.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ],
+        "mean": [
+          "DALEW36/Benchmark.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+          "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+          "Mikroindikator/Mikroindikator.R",
+          "Uge37/PairProgrammering10/PairProgramming1009.R"
+        ]
+      }
+    },
+    {
+      "id": "variant-3",
+      "functions": [
+        "function"
+      ],
+      "evidence": {
+        "function": [
+          "DALE26W35/Torsdag.R",
+          "DALEW36/EstoniaFil.R",
+          "DALEW36/myRounder.R",
+          "Mikroindikator/Mikroindikator.R",
+          "OpenSky/gethilsen.R",
+          "OpenSky/util.R",
+          "Terning/dice.R",
+          "Uge37/Test/Terning.R",
+          "util.r"
+        ]
+      }
+    }
+  ]
+}

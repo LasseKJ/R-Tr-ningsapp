@@ -1,17 +1,17 @@
 # R Lab — din personlige R-træning
 
-En komplet dansksproget træningsapp til base R, bygget ud fra emnerne i 34 R-filer i det udleverede kursusmateriale.
+En komplet dansksproget træningsapp til base R, bygget ud fra 27 R-filer uden OLA-mapper i det udleverede kursusmateriale.
 
 ## Brug appen
 
 Den hostede udgave: https://r-tr-ningsapp.vercel.app
 
-- 49 opgaver i seks emner: vektorer/typer, data frames, filtrering/sortering, funktioner/løkker, statistik/NA og simulation/modeller.
+- 47 opgaver i seks emner: vektorer/typer, data frames, filtrering/sortering, funktioner/løkker, statistik/NA og simulation/modeller.
 - Skriv rigtig R-kode, forudsig output, vælg svar eller ret fejl. Alternative løsninger godkendes ud fra resultatet, ikke en strengsammenligning af kildekoden.
 - Konsol og plotvisning, hints, løsningsforslag og et opslagsværk.
 - Reproducerbare varianter med nye tal inden for fire opgavefamilier.
 - Eksamenstræning: 10 opgaver på tværs af alle emner, 20 minutter, låste afleveringer og samlet gennemgang bagefter. En aktiv prøve kan genoptages; tiden løber videre.
-- Historik, korrekthed, første forsøg uden hjælp, tid, dagligt mål, streak og emnestatistik. Eksamensforsøg holdes adskilt fra træning. Vist facit giver ikke en selvstændig gennemførelse. Varianter indgår i aktiviteten, men øger ikke tælleren for de 49 faste opgaver.
+- Historik, korrekthed, første forsøg uden hjælp, tid, dagligt mål, streak og emnestatistik. Eksamensforsøg holdes adskilt fra træning. Vist facit giver ikke en selvstændig gennemførelse. Varianter indgår i aktiviteten, men øger ikke tælleren for de 47 faste opgaver.
 - Lokale kladder, eksport/import af JSON-backup og bekræftet nulstilling.
 - Responsivt layout, tastaturbetjening og skærmlæseretiketter.
 
@@ -70,3 +70,9 @@ Supabase Free i Frankfurt leverer Auth og Postgres. Vercel serverer `/api/config
 Ved ny installation: kør skemaet én gang i Supabase SQL Editor, tilknyt integrationen i Vercel og sæt Auth Site URL til produktionsadressen. Miljøvariabler: `NEXT_PUBLIC_SUPABASE_URL` og `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Ingen hemmeligheder hører hjemme i Git. Den lokale statiske server understøtter gæstetræning; Vercel Functions kræves for `/api/config`.
 
 Login kræver e-mailadgang. Supabases standardmail er begrænset til organisationens godkendte adresser og har lave rategrænser. Offentlig registrering for andre brugere kræver en tilknyttet SMTP-udbyder. Bekræftelseskrav er ikke slået fra.
+
+## Pensum uden OLA
+
+Alle mapper med navne der begynder med OLA (uanset store/små bogstaver og mappeniveau) er udeladt. 27 filer er tilladt, 7 er udeladt. `course-audit.json` dokumenterer funktioner og deres kildefiler for alle faste opgaver og de fire variantfamilier. `dist/course-evidence.js` leverer kildehenvisningerne i appen. Originalfiler og adgangsoplysninger offentliggøres ikke.
+
+Opgaverne med `cor()` og `combn()` er fjernet, da funktionerne kun fandtes i OLA-materialet. `length.out` og det unødvendige `drop = FALSE` er fjernet fra løsningsforslag. R-håndbogen er tilpasset samme pensum. Bedømmelsesmotorens interne hjælpefunktioner er ikke en del af det, eleven skal skrive. `tests/course-scope.test.mjs` kontrollerer funktionerne i startkode, opgavedata og facit, også for 100 genererede varianter.
