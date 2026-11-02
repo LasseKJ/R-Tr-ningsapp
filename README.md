@@ -6,12 +6,12 @@ En komplet dansksproget træningsapp til base R, bygget ud fra 27 R-filer uden O
 
 Den hostede udgave: https://r-tr-ningsapp.vercel.app
 
-- 47 opgaver i seks emner: vektorer/typer, data frames, filtrering/sortering, funktioner/løkker, statistik/NA og simulation/modeller.
+- 68 opgaver i seks emner: vektorer/typer, data frames, filtrering/sortering, funktioner/løkker, statistik/NA og simulation/modeller.
 - Skriv rigtig R-kode, forudsig output, vælg svar eller ret fejl. Alternative løsninger godkendes ud fra resultatet, ikke en strengsammenligning af kildekoden.
 - Konsol og plotvisning, hints, løsningsforslag og et opslagsværk.
 - Reproducerbare varianter med nye tal inden for fire opgavefamilier.
 - Eksamenstræning: 10 opgaver på tværs af alle emner, 20 minutter, låste afleveringer og samlet gennemgang bagefter. En aktiv prøve kan genoptages; tiden løber videre.
-- Historik, korrekthed, første forsøg uden hjælp, tid, dagligt mål, streak og emnestatistik. Eksamensforsøg holdes adskilt fra træning. Vist facit giver ikke en selvstændig gennemførelse. Varianter indgår i aktiviteten, men øger ikke tælleren for de 47 faste opgaver.
+- Historik, korrekthed, første forsøg uden hjælp, tid, dagligt mål, streak og emnestatistik. Eksamensforsøg holdes adskilt fra træning. Vist facit giver ikke en selvstændig gennemførelse. Varianter indgår i aktiviteten, men øger ikke tælleren for de 68 faste opgaver.
 - Lokale kladder, eksport/import af JSON-backup og bekræftet nulstilling.
 - Responsivt layout, tastaturbetjening og skærmlæseretiketter.
 
@@ -76,3 +76,7 @@ Login kræver e-mailadgang. Supabases standardmail er begrænset til organisatio
 Alle mapper med navne der begynder med OLA (uanset store/små bogstaver og mappeniveau) er udeladt. 27 filer er tilladt, 7 er udeladt. `course-audit.json` dokumenterer funktioner og deres kildefiler for alle faste opgaver og de fire variantfamilier. `dist/course-evidence.js` leverer kildehenvisningerne i appen. Originalfiler og adgangsoplysninger offentliggøres ikke.
 
 Opgaverne med `cor()` og `combn()` er fjernet, da funktionerne kun fandtes i OLA-materialet. `length.out` og det unødvendige `drop = FALSE` er fjernet fra løsningsforslag. R-håndbogen er tilpasset samme pensum. Bedømmelsesmotorens interne hjælpefunktioner er ikke en del af det, eleven skal skrive. `tests/course-scope.test.mjs` kontrollerer funktionerne i startkode, opgavedata og facit, også for 100 genererede varianter.
+
+## Hele eksamensarket
+
+Opgavebiblioteket har en tjekliste med samtlige 31 spørgsmål/delspørgsmål fra `Eksamenstræningsopgaver - Svar.R`: 1.1–5.4, seks beskrivende mål og den ekstra kvartilopgave. `dist/exam-sheet.js` kobler hvert spørgsmål til øvelser og tilføjer 21 nye øvelser. Under 1.2 trænes både struktur, klasse og interne datatyper. Tidligere øvelses-id’er og brugerhistorik bevares. `tests/exam-sheet.test.mjs` kontrollerer fuld dækning.

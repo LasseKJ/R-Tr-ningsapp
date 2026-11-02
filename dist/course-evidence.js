@@ -1,4 +1,4 @@
-// Function calls verified against uploaded R files outside every OLA directory.
+// Function evidence from uploaded R files outside OLA folders.
 export const courseEvidence = {
   "v-seq": {
     "seq": [
@@ -580,6 +580,107 @@ export const courseEvidence = {
     "merge": [
       "Mikroindikator/Mikroindikator.R",
       "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ]
+  },
+  "d-structure": {
+    "str": [
+      "DALEW36/Onsdag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ]
+  },
+  "d-class": {},
+  "d-type": {},
+  "d-cyl-type": {},
+  "s-hp-min": {
+    "min": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ]
+  },
+  "s-hp-max": {
+    "max": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ]
+  },
+  "d-first-five": {},
+  "f-mpg": {},
+  "f-eight": {},
+  "f-hp-atleast": {},
+  "f-five-and": {},
+  "d-four-columns": {
+    "c": [
+      "02-11-2026 Tavle undervisning.R",
+      "DALE26W35/Fredag.R",
+      "DALE26W38/Tirsdag.R",
+      "DALEW36/EstoniaFil.R",
+      "DALEW36/Mandag - Playing Cards.R",
+      "DALEW36/Pair Programming - Mandag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/GetPlanes.R",
+      "Uge 40/Mandag.R",
+      "Uge37/PairProgrammering10/PairProgramming1009.R"
+    ]
+  },
+  "f-hp-desc": {
+    "order": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R"
+    ]
+  },
+  "d-high-mpg": {},
+  "d-new-ten": {
+    "head": [
+      "DALEW36/Mandag - Playing Cards.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ]
+  },
+  "s-mpg-median": {
+    "median": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ]
+  },
+  "s-mpg-sd": {
+    "sd": [
+      "02-11-2026 Tavle undervisning.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "OpenSky/GetPlanes.R",
+      "Uge 40/Mandag.R"
+    ]
+  },
+  "s-mpg-min": {
+    "min": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ]
+  },
+  "s-mpg-max": {
+    "max": [
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R"
+    ]
+  },
+  "s-mpg-count": {
+    "length": [
+      "02-11-2026 Tavle undervisning.R",
+      "DALEW36/Pair Programming - Mandag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/GetPlanes.R"
+    ]
+  },
+  "s-mpg-summary": {
+    "summary": [
+      "02-11-2026 Tavle undervisning.R",
+      "DALEW36/Onsdag.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Forsøg 1.R",
+      "Eksamensøvning/Eksamenstræningsopgaver - Svar.R",
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/GetPlanes.R"
     ]
   },
   "variant-0": {},

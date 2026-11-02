@@ -1,3 +1,4 @@
+import {addExamSheetExercises} from './exam-sheet.js';
 import {courseEvidence} from './course-evidence.js';
 export const topics = [
  {id:'vectors',name:'Vektorer & typer',icon:'[ ]',description:'Byg dit fundament med værdier, sekvenser og indeksering.'},
@@ -58,6 +59,8 @@ add('m-growth','simulation','Årlig vækst','Returnér procentvis vækst fra foe
 add('m-lm','simulation','Din første regressionsmodel','Opret model med mpg som respons og wt som forklarende variabel fra biler.','model <- lm(mpg ~ wt, data = biler)',{setup:car,source:'model',level:3,hint:'lm(y ~ x, data = ...) tilpasser en lineær model.',check:'inherits(model, "lm") && isTRUE(all.equal(coef(model), coef(lm(mpg ~ wt, data=mtcars))))'});
 add('m-r2','simulation','Forklaringsgrad','Returnér R² for den klargjorte model.','summary(model)$r.squared',{setup:'model <- lm(mpg ~ wt, data = mtcars)',source:'model',level:3,hint:'summary(model) indeholder r.squared.'});
 add('m-merge','simulation','Saml data på kvartal','Returnér de to datasæt sammenkoblet på kvartal. Behold kun fælles kvartaler og kolonnerne kvartal, forbrug, tillid.','merge(forbrug, tillid, by = "kvartal")',{source:'macro',level:3,setup:'forbrug <- data.frame(kvartal = c("2024K1", "2024K2", "2024K3"), forbrug = c(100, 104, 106))\ntillid <- data.frame(kvartal = c("2024K1", "2024K2"), tillid = c(-5, -2))',hint:'merge() udfører som standard et inner join på den angivne nøgle.'});
+
+addExamSheetExercises(add);
 
 for (const ex of exercises) {
  ex.evidence=courseEvidence[ex.id]||{};
