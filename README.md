@@ -4,7 +4,7 @@ En komplet dansksproget træningsapp til base R, bygget ud fra emnerne i 34 R-fi
 
 ## Brug appen
 
-Den hostede udgave: https://r-traeningslab-lasse.alert-mole-5156.chatgpt.site
+Den hostede udgave: https://r-tr-ningsapp.vercel.app
 
 - 49 opgaver i seks emner: vektorer/typer, data frames, filtrering/sortering, funktioner/løkker, statistik/NA og simulation/modeller.
 - Skriv rigtig R-kode, forudsig output, vælg svar eller ret fejl. Alternative løsninger godkendes ud fra resultatet, ikke en strengsammenligning af kildekoden.
@@ -53,8 +53,20 @@ For at tilføje en opgave: brug `add()` i `course.js`. Standardopgaver sammenlig
 
 ## Data og afgrænsning
 
-Fremskridt ligger kun i browserens localStorage under `r-lab-progress-v1`. Der er ingen serverdatabase, brugerkonto eller synkronisering mellem enheder. Browserrydning kan slette resultater; brug backupfunktionen. Indlæsning af motoren kræver internet og henter WebR 0.6.0 fra r-wasm.org. Fonts hentes fra Google Fonts med lokale fallbackskrifter. Besvarelser sendes ikke til en bedømmelsesserver. Kode kører lokalt, men brugeren kan selv skrive netværkskald i R.
+Gæstefremskridt ligger i localStorage under `r-lab-progress-v1`. Med login via Supabase gemmes fremskridt i Postgres og i en separat lokal kontocache. Lokale gæsteresultater importeres kun efter brugerens eget valg. Revisioner beskytter mod tab ved samtidige ændringer: brugeren kan eksportere den lokale version og derefter hente online-versionen. Browserrydning kan slette resultater; brug backupfunktionen. Indlæsning af motoren kræver internet og henter WebR 0.6.0 fra r-wasm.org. Fonts hentes fra Google Fonts med lokale fallbackskrifter. Besvarelser sendes ikke til en bedømmelsesserver. Kode kører lokalt, men brugeren kan selv skrive netværkskald i R.
 
 Dette er en læringsapp, ikke en eksamensplatform med snydesikring. Facit og testkontrakter er synlige i kildekoden. Visualiseringer vises, men bedømmes ikke på deres visuelle kvalitet. Tiden tæller, når en opgave er synlig og ikke kører; tiden gemmes ved en bedømt aflevering. Syntaksfejl og motorfejl tæller ikke som bedømte forsøg. Variantsøgning er skabelonbaseret, ikke AI-generering.
 
 De originale kursusfiler er ikke lagt i repository. API-oplysninger, personlige stier, RStudio-sessioner og historik fra zipfilen er udeladt. API-, scraping- og pakkeafhængige analyser er omsat til selvstændige base R-opgaver med indbyggede eller syntetiske data. Fejl i de tidligere besvarelser er ikke genbrugt som facit.
+
+## Online profiler
+
+Supabase Free i Frankfurt leverer Auth og Postgres. Vercel serverer `/api/config`, som kun returnerer den offentlige Supabase-URL og anon-nøgle. Service role-nøgler eksponeres aldrig. `supabase/schema.sql` opretter RLS-tabellen og en atomisk RPC, der udleder bruger-id fra den verificerede session.
+
+- `dist/account.js`: loginlink, navn, logout, lokal import og synkroniseringsstatus.
+- `dist/sync.js`: separat kontocache, offlineændringer og revisionskontrol.
+- `tests/sync.test.mjs`: import, adskillelse af konti, samtidige ændringer og genoptagelse.
+
+Ved ny installation: kør skemaet én gang i Supabase SQL Editor, tilknyt integrationen i Vercel og sæt Auth Site URL til produktionsadressen. Miljøvariabler: `NEXT_PUBLIC_SUPABASE_URL` og `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Ingen hemmeligheder hører hjemme i Git. Den lokale statiske server understøtter gæstetræning; Vercel Functions kræves for `/api/config`.
+
+Login kræver e-mailadgang. Supabases standardmail er begrænset til organisationens godkendte adresser og har lave rategrænser. Offentlig registrering for andre brugere kræver en tilknyttet SMTP-udbyder. Bekræftelseskrav er ikke slået fra.
