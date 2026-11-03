@@ -1,5 +1,5 @@
 export const KEY='r-lab-progress-v1';
-export const emptyProgress=()=>({version:1,attempts:[],drafts:{},revealedDrafts:{},exams:[],reports:[],activeExam:null,dailyGoal:5});
+export const emptyProgress=()=>({version:1,attempts:[],drafts:{},revealedDrafts:{},exams:[],reports:[],activeExam:null,dailyGoal:5,enabledOlaYears:[]});
 export function validateProgress(p){
  if(!p||p.version!==1||!Array.isArray(p.attempts)||p.attempts.length>100000||!Array.isArray(p.exams)||!p.drafts||typeof p.drafts!=='object'||Array.isArray(p.drafts)) throw new Error('Filen er ikke en gyldig R Lab-backup.');
  if(p.attempts.some(a=>!a||typeof a.exerciseId!=='string'||typeof a.correct!=='boolean'||!Number.isFinite(a.seconds)||a.seconds<0||!Number.isFinite(Date.parse(a.at))))throw new Error('Backup indeholder ugyldige forsøg.');
