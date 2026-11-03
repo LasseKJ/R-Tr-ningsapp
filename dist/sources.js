@@ -322,7 +322,7 @@ export const teachingSources = [
     "description": "Månedlige værdier for forbrugertillidsindikatoren fra 2006 og frem. Kildedata til opgaven om ændringer fra måned til måned.",
     "functions": []
   }
-,[
+,...[
   {
     "path": "OLA2GRP4-main/OPG1.1",
     "description": "BY3-folketal: hent bydata og fjern rækker efter tekst og indbyggertal.",
