@@ -1,3 +1,4 @@
+import {solutionOptions} from '../dist/solutions.js';
 // WEBR_MODULE may point to a local WebR 0.6.0 webr.mjs for offline/CI verification.
 import {pathToFileURL} from 'node:url';
 import assert from 'node:assert/strict';
@@ -12,6 +13,7 @@ try{
  for(const ex of [...exercises,...Array.from({length:16},(_,i)=>makeVariant(i))].filter(e=>!['choice','output'].includes(e.kind))){
   if(ex.packages?.length)await r.installPackages(ex.packages);
   const result=await check(buildProgram(ex,ex.solution));assert.equal(result,true,`Solution rejected: ${ex.id}`);
+  for(const alternative of solutionOptions(ex))assert.equal(await check(buildProgram(ex,alternative.code)),true,`Alternative rejected: ${ex.id}: ${alternative.label}: ${alternative.code}`);
   const name=ex.solution.match(/^([A-Za-z_][A-Za-z_0-9]*)\s*(?:<-|=)/)?.[1];
   if(name)assert.equal(await check(buildProgram(ex,ex.solution.replace(new RegExp('\\b'+name+'\\b','g'),name.toUpperCase()))),true,`Capitalized object rejected: ${ex.id}`);
   const wrong=await check(buildProgram(ex,'NULL'));assert.equal(wrong,false,`Empty solution accepted: ${ex.id}`);passed++;
