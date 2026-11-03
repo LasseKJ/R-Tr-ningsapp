@@ -10,7 +10,7 @@ export function normalizePackages(value){return packageOptions.map(p=>p.id).filt
 export const packageExercises=[];
 const car='biler <- mtcars';
 function add(id,topic,title,prompt,solution,packages,{setup=car,source='Eksamensøvning/Eksamenstræningsopgaver - Svar.R',...extra}={}){
- packageExercises.push({id,topic,title,prompt,solution,packages,setup:packages.map(p=>`library(${p})`).join('\n')+'\n'+setup,source,kind:'code',starter:'# Skriv din løsning her\n',hint:'Brug funktionerne fra de tilvalgte pakker.',explanation:'Samme funktioner og fremgangsmåde som i dit materiale; dataene er lokale øvedata.',level:2,check:null,...extra});
+ packageExercises.push({id,topic,title,prompt,solution,packages,setup:packages.map(p=>`library(${p})`).join('\n')+'\n'+setup,source,kind:'code',starter:'# Skriv din løsning her\n',hint:'Brug funktionerne fra de tilvalgte pakker.',explanation:'Samme funktioner og fremgangsmåde som i undervisningsmaterialet; dataene er lokale øvedata.',level:2,check:null,...extra});
 }
 add('pkg-filter','filter','dplyr · udvælg cylindre','Brug filter() til at returnere biler med 4 eller 8 cylindre.','filter(biler, cyl %in% c(4, 8))',['dplyr'],{hint:'filter(biler, cyl %in% c(4, 8)).'});
 add('pkg-select','frames','dplyr · vælg kolonner','Brug select() til at returnere mpg, hp, wt og cyl i denne rækkefølge.','select(biler, mpg, hp, wt, cyl)',['dplyr'],{hint:'Kolonnenavnene skrives efter datasættet, adskilt af komma.'});

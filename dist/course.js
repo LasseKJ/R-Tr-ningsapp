@@ -87,7 +87,7 @@ export function makeVariant(seed=Date.now()) {
   {topic:'stats',title:'Nye data · håndtér NA',setup:`x <- c(${n%13+2}, NA, ${n%17+4}, ${n%9+3}, NA)`,prompt:'Returnér gennemsnittet af de kendte værdier.',solution:'mean(x, na.rm = TRUE)',hint:'Husk na.rm = TRUE.',level:1},
   {topic:'functions',title:'Nye data · en omregner',setup:'',prompt:`Opret funktionen omregn med argumentet x. Brug formlen: resultat = x * ${n%8+2} + ${n%11+1}. Returnér resultatet. Funktionen skal virke på både ét tal og en vektor.`,solution:`omregn <- function(x) x * ${n%8+2} + ${n%11+1}`,check:`is.function(omregn) && isTRUE(all.equal(omregn(c(-2,0,1,5)), c(-2,0,1,5) * ${n%8+2} + ${n%11+1}))`,hint:'En funktion kan arbejde direkte på en hel vektor.',level:2}
  ];
- const variant={id:`variant-${n}`,source:'Genereret variant af dit undervisningsmateriale',kind:'code',starter:'# Skriv din løsning her\n',explanation:'Denne variant træner samme princip med nye værdier.',...templates[n%templates.length]};
+ const variant={id:`variant-${n}`,source:'Genereret variant af undervisningsmaterialet',kind:'code',starter:'# Skriv din løsning her\n',explanation:'Denne variant træner samme princip med nye værdier.',...templates[n%templates.length]};
  return {...variant,comparison:answerPolicy(variant)};
 }
 export const kindLabels={code:'Skriv kode',debug:'Ret fejlen',choice:'Vælg svar',output:'Forudsig output'};
