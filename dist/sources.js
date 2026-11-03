@@ -357,3 +357,21 @@ export const documentationSources = [
 ];
 
 documentationSources.push({name:'R · statistik',url:'https://stat.ethz.ch/R-manual/R-devel/library/stats/html/00Index.html',description:'Officiel reference til statistik, herunder sd(), lm() og aggregate().'}, {name:'R · datasættet mtcars',url:'https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html',description:'Dokumentation af det indbyggede bildatasæt mtcars. I mange af opgaverne er biler en lokal kopi af dette datasæt.'});
+const folderDescriptions={
+ 'DALE26W35':'Introduktion til R med vektorer, pakker og egne funktioner.',
+ 'DALEW36':'Grundlæggende datastrukturer: lister, matricer og data frames. Indeholder også pair programming, datastruktur, manglende værdier, statistik og boksplot.',
+ 'Uge37':'Pair programming med filtrering, gennemsnit, løkker og sammenkobling af data samt testmateriale til terningesimulationer.',
+ 'DALE26W38':'Arbejde med vektorer, lister og indlæsning af pakker.',
+ 'Uge 40':'Bearbejdning af data med dplyr: filtrering, nye kolonner, gruppering og opsummering. Linjeplot bruges til at sammenligne udvikling mellem områder.',
+ 'Eksamensøvning':'Samlede eksamenstræningsopgaver med både løsningsforsøg og svar. Dækker undersøgelse af datasæt, udvælgelse, filtrering, sortering, nye variabler og beskrivende statistik.',
+ 'Mikroindikator':'Arbejde med makrodata og tidsperioder: sekvenser, datarensning, brede tabeller, sammenkobling af datasæt, regression og linjeplot.',
+ 'OpenSky':'Et forløb om flydata med indlæsning af JSON, tekstbehandling, omdøbning, filtrering, sortering, gruppering og hjælpefunktioner.',
+ 'EuroStat':'Filtrering af data og søgning efter mønstre i tekst med stringr.',
+ 'Terning':'Simulation af terningekast med tilfældige træk, gentagelser og beregning af summer.',
+ 'fredag2':'Omregning og afrunding med ceiling() samt beregninger pr. gruppe med aggregate().',
+ '':'Fælles materiale uden en overordnet mappe: tavleundervisning om JSON, tekst, filtrering og statistik samt generelle hjælpefunktioner.'
+};
+export const sourceFolders=Object.entries(folderDescriptions).map(([path,description])=>({
+ path,name:path||'Fælles materiale',description,
+ files:teachingSources.filter(source=>(source.path.includes('/')?source.path.split('/')[0]:'')===path)
+}));
