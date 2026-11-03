@@ -1,5 +1,5 @@
 export class SharedReports {
- constructor({request=fetch,onChange=()=>{}}={}){this.request=request;this.onChange=onChange;this.reports=[];this.error='';this.published=new Set();}
+ constructor({request=(...args)=>fetch(...args),onChange=()=>{}}={}){this.request=request;this.onChange=onChange;this.reports=[];this.error='';this.published=new Set();}
  async call(method,body,cursor=null){
   const response=await this.request('/api/reports'+(cursor?'?cursor='+encodeURIComponent(cursor):''),{method,headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(15000)});
   const result=await response.json();if(!response.ok)throw Error(result.error||'Rapportlisten kunne ikke nås.');return result;

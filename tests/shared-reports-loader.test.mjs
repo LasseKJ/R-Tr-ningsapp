@@ -48,3 +48,9 @@ test('shared reports validate input and never publish account identity fields',(
 test('offline report list retains its cache and exposes a retryable error',async()=>{
  const store=new SharedReports({request:async()=>{throw Error('offline');}});store.reports=[report];await store.refresh();assert.equal(store.error,'offline');assert.deepEqual(store.reports,[report]);
 });
+test('default browser fetch is called without the store as its receiver',async()=>{
+ const original=globalThis.fetch;let receiver;
+ globalThis.fetch=async function(){receiver=this;return {ok:true,json:async()=>({reports:[]})};};
+ try{const store=new SharedReports();await store.refresh();assert.equal(receiver,undefined);assert.equal(store.error,'');}
+ finally{globalThis.fetch=original;}
+});
