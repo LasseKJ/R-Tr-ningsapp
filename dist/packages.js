@@ -5,8 +5,8 @@ export const packageOptions=[
  {id:'tidyr',description:'pivot_wider som i Mikroindikator'},
  {id:'ggplot2',description:'Tegn linjeplot og boksplot, ret plotkode og forstå figurer'}
 ];
-export function enabledExercises(exercises,selected=[]){return exercises.filter(e=>(e.packages||[]).every(p=>selected.includes(p)));}
-export function normalizePackages(value){return packageOptions.map(p=>p.id).filter(p=>Array.isArray(value)&&value.includes(p));}
+export function enabledExercises(exercises,selected=[]){const active=normalizePackages(selected);return exercises.filter(e=>{const required=(e.packages||[]).length?e.packages:['baseR'];return required.every(p=>active.includes(p));});}
+export function normalizePackages(value){const stored=Array.isArray(value)?value:[];const baseR=!stored.includes('__baseR_off__');return [...(baseR?['baseR']:['__baseR_off__']),...packageOptions.map(p=>p.id).filter(p=>stored.includes(p))];}
 export const packageExercises=[];
 const car='biler <- mtcars';
 function add(id,topic,title,prompt,solution,packages,{setup=car,source='Eksamensøvning/Eksamenstræningsopgaver - Svar.R',...extra}={}){

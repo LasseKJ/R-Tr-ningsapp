@@ -24,3 +24,5 @@ pre,code,.code-editor,.setup-code,.solution-option pre{font-variant-ligatures:no
 .source-folder-files{margin-top:18px}.source-folder-files summary{cursor:pointer;font-size:12px}.source-folder-files ul{padding-left:18px;margin-top:16px}.source-folder-files li{margin-bottom:16px}.source-folder-files strong{font-size:12px;font-weight:500;overflow-wrap:anywhere}.source-folder-files li p{font-size:12px;margin:5px 0 0}
 
 .hint-method h4{font-size:12px;margin:15px 0 6px}.hint-method p{margin-top:0}
+
+.package-warning{margin:12px 0 0;padding:10px 12px;border:1px solid #ecd5a9;border-radius:7px;background:#fff8e9;color:#795c2b;font-size:10px;line-height:1.5}.package-warning strong{font-size:10px}
