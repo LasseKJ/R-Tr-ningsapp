@@ -21,8 +21,10 @@ export function buildProgram(exercise,code,grade=true){
    .expr <- parse(text = ${submitted})
    # Match exercise object names without changing strings, function names or R syntax.
    .canonical <- character()
+   .columns <- character()
    .collect <- function(x) {
      if (missing(x)) return(NULL)
+     if (is.call(x) && identical(x[[1]], as.name("$")) && is.symbol(x[[3]])) .columns <<- c(.columns, as.character(x[[3]]))
      if (is.call(x) && as.character(x[[1]])[1] %in% c("<-", "=", "<<-")) {
        if (is.symbol(x[[2]])) .canonical <<- c(.canonical, as.character(x[[2]]))
      }
@@ -41,8 +43,12 @@ export function buildProgram(exercise,code,grade=true){
      } else if (is.call(x) || is.expression(x)) {
        for (i in seq_along(x)) {
          if (identical(x[[i]], quote(expr = ))) next
-         # Preserve literal column names after $ and @.
-         if (is.call(x) && as.character(x[[1]])[1] %in% c("$", "@") && i == 3L) next
+         if (is.call(x) && identical(x[[1]], as.name("$")) && i == 3L) {
+           j <- match(tolower(as.character(x[[i]])), tolower(.columns))
+           if (!is.na(j)) x[[i]] <- as.name(.columns[[j]])
+           next
+         }
+         if (is.call(x) && identical(x[[1]], as.name("@")) && i == 3L) next
          x[i] <- list(.normalize(x[[i]]))
        }
      }
@@ -51,11 +57,54 @@ export function buildProgram(exercise,code,grade=true){
    .expr <- .normalize(.expr)
    .value <- withVisible(eval(.expr, envir = .env))
    if (.value$visible) print(.value$value)
+   # Also accept differently capitalized names created via assign().
+   for (.name in .canonical) {
+     .matches <- ls(.env, all.names = TRUE)
+     .matches <- .matches[tolower(.matches) == tolower(.name)]
+     if (!exists(.name, .env, inherits = FALSE) && length(.matches) == 1L) assign(.name, get(.matches, .env), .env)
+   }
+   for (.name in ls(.env, all.names = TRUE)) {
+     .object <- get(.name, .env)
+     if (is.data.frame(.object)) {
+       .indices <- match(tolower(names(.object)), tolower(.columns))
+       .known <- !is.na(.indices)
+       names(.object)[.known] <- .columns[.indices[.known]]
+       assign(.name, .object, .env)
+     }
+   }
    .env$.answer <- .value$value
    .env$.user_expr <- .expr
+   .equivalent <- function(actual, expected) {
+     if (is.data.frame(actual) && is.data.frame(expected)) {
+       actual <- as.data.frame(actual); expected <- as.data.frame(expected)
+       names(actual) <- tolower(names(actual)); names(expected) <- tolower(names(expected))
+       if (!identical(dim(actual), dim(expected))) return(FALSE)
+       if (!${exercise.comparison?.columnOrderMatters?'TRUE':'FALSE'}) {
+         if (!setequal(names(actual), names(expected)) || anyDuplicated(names(actual))) return(FALSE)
+         actual <- actual[, names(expected), drop = FALSE]
+       }
+       ${exercise.comparison?.sortBy?`if (!(${JSON.stringify(exercise.comparison.sortBy)} %in% names(actual))) return(FALSE)
+       .key <- actual[[${JSON.stringify(exercise.comparison.sortBy)}]]
+       if (is.unsorted(${exercise.comparison.descending?'rev(.key)':'.key'})) return(FALSE)` : ''}
+       if (!${exercise.comparison?.rowOrderMatters?'TRUE':'FALSE'} && nrow(actual) > 0L) {
+         actual <- actual[do.call(order, unname(actual)), , drop = FALSE]
+         expected <- expected[do.call(order, unname(expected)), , drop = FALSE]
+       }
+       rownames(actual) <- NULL; rownames(expected) <- NULL
+       return(isTRUE(all.equal(actual, expected, tolerance = 1e-7)))
+     }
+     if (is.atomic(actual) && is.atomic(expected) && is.null(dim(actual)) && is.null(dim(expected)) && !is.null(names(actual)) && !is.null(names(expected))) {
+       names(actual) <- tolower(names(actual)); names(expected) <- tolower(names(expected))
+       if (!anyDuplicated(names(actual)) && !anyDuplicated(names(expected)) && setequal(names(actual), names(expected))) actual <- actual[names(expected)]
+     }
+     if (${exercise.comparison?.valueOrderMatters===false?'TRUE':'FALSE'} && is.atomic(actual) && is.atomic(expected) && is.null(dim(actual)) && is.null(dim(expected))) {
+       actual <- sort(actual, na.last = TRUE); expected <- sort(expected, na.last = TRUE)
+     }
+     isTRUE(all.equal(actual, expected, tolerance = 1e-7))
+   }
    ${grade?` .expected <- eval(parse(text = ${solution}), envir = .ref)
    .env$.expected <- .expected
-   .ok <- tryCatch(isTRUE(${exercise.check?`eval(parse(text = ${JSON.stringify(exercise.check)}), envir = .env)`:'all.equal(.value$value, .expected, tolerance = 1e-7)'}), error = function(e) FALSE)
+   .ok <- tryCatch(isTRUE(${exercise.check?`eval(parse(text = ${JSON.stringify(exercise.check)}), envir = .env)`:'.equivalent(.value$value, .expected)'}), error = function(e) FALSE)
    .ok`:'TRUE'}
  })`;
 }

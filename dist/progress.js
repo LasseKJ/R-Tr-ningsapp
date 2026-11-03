@@ -24,10 +24,16 @@ export function summary(progress,exercises,now=new Date()){
 export function normalizeOutput(value){return String(value).trim().replace(/^\[1\]\s*/,'').replace(/^c\((.*)\)$/s,'$1').replace(/[",]/g,' ').replace(/\s+/g,' ').trim();}
 export function gradeText(exercise,value){
  if(exercise.kind==='choice')return Number(value)===exercise.answer;
- const actual=normalizeOutput(value),expected=normalizeOutput(exercise.answer);
- if(exercise.orderMatters!==false)return actual===expected;
- const tokens=s=>s.split(' ').sort();
- return JSON.stringify(tokens(actual))===JSON.stringify(tokens(expected));
+ const actual=normalizeOutput(value).split(' '),expected=normalizeOutput(exercise.answer).split(' ');
+ if(actual.length!==expected.length)return false;
+ const numeric=xs=>xs.every(x=>/^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i.test(x));
+ if(numeric(actual)&&numeric(expected)){
+  const a=actual.map(Number),b=expected.map(Number);
+  if(exercise.orderMatters===false){a.sort((x,y)=>x-y);b.sort((x,y)=>x-y);}
+  return a.every((x,i)=>Number.isFinite(x)&&Number.isFinite(b[i])&&Math.abs(x-b[i])<=1e-7*Math.max(1,Math.abs(b[i])));
+ }
+ if(exercise.orderMatters===false){actual.sort();expected.sort();}
+ return JSON.stringify(actual)===JSON.stringify(expected);
 }
 export function selectExam(exercises,count=10,random=Math.random){
  const pool=[...exercises];for(let i=pool.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}

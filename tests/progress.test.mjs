@@ -21,3 +21,21 @@ test('generated variants count as practice but cannot inflate the fixed library 
  assert.equal(gradeText(ex,'12 9 9'),false);
  assert.equal(gradeText({...ex,orderMatters:true},'12 9 15'),false);
  });
+
+test('every library exercise and generated family declares its comparison contract',()=>{
+ for(const ex of [...exercises,...Array.from({length:4},(_,i)=>makeVariant(i))]){
+  assert.equal(typeof ex.comparison.rowOrderMatters,'boolean',ex.id);
+  assert.equal(typeof ex.comparison.columnOrderMatters,'boolean',ex.id);
+ }
+ assert.equal(exercises.find(e=>e.id==='d-select').comparison.columnOrderMatters,true);
+ assert.equal(exercises.find(e=>e.id==='f-hp').comparison.rowOrderMatters,false);
+ assert.equal(exercises.find(e=>e.id==='d-first-five').comparison.rowOrderMatters,true);
+ assert.equal(exercises.find(e=>e.id==='f-sort').comparison.sortBy,'mpg');
+});
+
+test('numeric output accepts equivalent numeric notation',()=>{
+ const ex=exercises.find(e=>e.id==='v-logic');
+ assert.equal(gradeText(ex,'1.2e1 9.0 15'),true);
+ assert.equal(gradeText(ex,'12 9 15.1'),false);
+ assert.equal(gradeText(ex,'Infinity 9 15'),false);
+});

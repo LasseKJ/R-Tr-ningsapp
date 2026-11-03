@@ -64,7 +64,16 @@ add('m-merge','simulation','Saml data på kvartal','Returnér de to datasæt sam
 addExamSheetExercises(add);
 exercises.push(...packageExercises);
 
+// Answer contracts are shared by practice, exams and generated variants.
+export function answerPolicy(ex) {
+ const rowOrdered=new Set(['d-head','d-last','d-first-five','d-new-ten']);
+ const columnOrdered=new Set(['d-select','d-four-columns','d-drop','pkg-select']);
+ const sorting={ 'f-sort':['mpg',false], 'f-top':['mpg',true], 'f-hp-desc':['hp',true], 'pkg-arrange':['hp',true] };
+ return {rowOrderMatters:rowOrdered.has(ex.id),columnOrderMatters:columnOrdered.has(ex.id),
+   valueOrderMatters:ex.id!=='v-index',sortBy:sorting[ex.id]?.[0]||null,descending:sorting[ex.id]?.[1]||false};
+}
 for (const ex of exercises) {
+ ex.comparison=answerPolicy(ex);
  ex.evidence=courseEvidence[ex.id]||{};
  const paths=[...new Set(Object.values(ex.evidence).flat())];
  if(paths.length)ex.source=paths.join(' · ');
@@ -78,6 +87,7 @@ export function makeVariant(seed=Date.now()) {
   {topic:'stats',title:'Nye data · håndtér NA',setup:`x <- c(${n%13+2}, NA, ${n%17+4}, ${n%9+3}, NA)`,prompt:'Returnér gennemsnittet af de kendte værdier.',solution:'mean(x, na.rm = TRUE)',hint:'Husk na.rm = TRUE.',level:1},
   {topic:'functions',title:'Nye data · en omregner',setup:'',prompt:`Skriv funktionen omregn(x), som ganger en numerisk vektor med ${n%8+2} og lægger ${n%11+1} til.`,solution:`omregn <- function(x) x * ${n%8+2} + ${n%11+1}`,check:`is.function(omregn) && isTRUE(all.equal(omregn(c(-2,0,1,5)), c(-2,0,1,5) * ${n%8+2} + ${n%11+1}))`,hint:'En funktion kan arbejde direkte på en hel vektor.',level:2}
  ];
- return {id:`variant-${n}`,source:'Genereret variant af dit undervisningsmateriale',kind:'code',starter:'# Skriv din løsning her\n',explanation:'Denne variant træner samme princip med nye værdier.',...templates[n%templates.length]};
+ const variant={id:`variant-${n}`,source:'Genereret variant af dit undervisningsmateriale',kind:'code',starter:'# Skriv din løsning her\n',explanation:'Denne variant træner samme princip med nye værdier.',...templates[n%templates.length]};
+ return {...variant,comparison:answerPolicy(variant)};
 }
 export const kindLabels={code:'Skriv kode',debug:'Ret fejlen',choice:'Vælg svar',output:'Forudsig output'};
