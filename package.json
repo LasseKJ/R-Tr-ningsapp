@@ -1,1 +1,17 @@
-{"name":"r-traeningslab","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"node scripts/serve.mjs","test":"node --test tests/*.test.mjs","test:r":"node scripts/verify-r.mjs"},"engines":{"node":">=22"}}
+{
+  "name": "r-traeningslab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:r": "node scripts/verify-r.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "postgres": "3.4.9"
+  }
+}

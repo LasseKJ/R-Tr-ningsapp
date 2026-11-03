@@ -1,21 +1,46 @@
+import {packageExports} from './package-exports.js';
 export const runtimePackages=['jsonlite','stringr','tidyr','ggplot2','dplyr'];
+export function requiredPackages(exercise,code,grade=true){
+ const source=[exercise.setup||'',code,grade?exercise.solution||'':''].join('\n');
+ const selected=new Set(exercise.packages||[]);
+ for(const pkg of runtimePackages)if(new RegExp('\\b'+pkg+'\\s*:::?|(?:library|require)\\s*\\(\\s*["\']?'+pkg+'\\b').test(source))selected.add(pkg);
+ const clean=source.replace(/#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g,' ');
+ const preferred=['dplyr','tidyr','stringr','jsonlite','ggplot2'];
+ for(const match of clean.matchAll(/([A-Za-z.][\w.]*)\s*\(/g)){
+  const pkg=preferred.find(p=>packageExports[p]?.includes(match[1]));if(pkg)selected.add(pkg);
+ }
+ return runtimePackages.filter(p=>selected.has(p));
+}
 // R is evaluated in a WebAssembly worker. No submitted code is sent to a server.
 const CDN='https://webr.r-wasm.org/v0.6.0/';
-let instance=null,initializing=null,generation=0;const installedPackages=new Set();
-export async function getEngine(status=()=>{}){
- if(instance)return instance;
- if(initializing)return initializing;
- status('Henter R-motor…');const current=generation;
- initializing=(async()=>{const {WebR}=await import(CDN+'webr.mjs');const r=new WebR({baseUrl:CDN,channelType:3,interactive:false});
- let timer;try{await Promise.race([r.init(),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('R-motoren kunne ikke indlæses. Kontrollér internetforbindelsen og prøv igen.')),90000))]);if(current!==generation){r.close();throw new Error('R-motoren blev genstartet.');}instance=r;status('R er klar');return r;}catch(e){r.close();throw e;}finally{clearTimeout(timer);}})();
- try{return await initializing;}finally{initializing=null;}
+let instance=null,startingInstance=null,initializing=null,generation=0;const installedPackages=new Set();
+export function deadline(promise,ms,message,onTimeout=()=>{}){
+ let timer;return Promise.race([promise,new Promise((_,reject)=>timer=setTimeout(()=>{onTimeout();reject(new Error(message));},ms))]).finally(()=>clearTimeout(timer));
 }
-export function resetEngine(){generation++;installedPackages.clear();if(instance){instance.close();instance=null;}initializing=null;}
+export async function getEngine(status=()=>{}){
+ if(instance)return instance;if(initializing)return initializing;
+ const current=generation,started=Date.now();status('Henter R-motor…');
+ const ticker=setInterval(()=>status('Henter R-motor… ('+Math.floor((Date.now()-started)/1000)+' sek.). Du kan stoppe indlæsningen.'),1000);
+ const pending=(async()=>{
+  let r;
+  try{
+   return await deadline((async()=>{
+    const {WebR}=await import(CDN+'webr.mjs');if(current!==generation)throw Error('Indlæsningen blev stoppet.');
+    r=new WebR({baseUrl:CDN,channelType:3,interactive:false});startingInstance=r;await r.init();
+    if(current!==generation)throw Error('R-motoren blev genstartet.');instance=r;status('R er klar');return r;
+   })(),60000,'R-motoren kunne ikke indlæses. Dit svar er gemt. Kontrollér forbindelsen, og prøv igen.',()=>{if(current===generation)generation++;r?.close();});
+  }catch(error){r?.close();status('Indlæsning stoppet — prøv igen');throw error;}
+  finally{clearInterval(ticker);if(startingInstance===r)startingInstance=null;}
+ })();
+ initializing=pending;try{return await pending;}finally{if(initializing===pending)initializing=null;}
+}
+export function resetEngine(){generation++;installedPackages.clear();instance?.close();if(startingInstance&&startingInstance!==instance)startingInstance.close();instance=null;startingInstance=null;initializing=null;}
 export function buildProgram(exercise,code,grade=true){
+ const packages=requiredPackages(exercise,code,grade);
  const setup=JSON.stringify(exercise.setup||'');const submitted=JSON.stringify(code);const solution=JSON.stringify(exercise.solution||'NULL');
  // New environments on each run prevent state leaking between attempts.
  return `local({
-   suppressPackageStartupMessages({ ${runtimePackages.map(p=>`library(${p})`).join("; ")} })
+   suppressPackageStartupMessages({ ${packages.map(p=>`library(${p})`).join("; ")} })
    .env <- new.env(parent = globalenv())
    .ref <- new.env(parent = globalenv())
    eval(parse(text = ${setup}), envir = .env)
@@ -112,8 +137,17 @@ export function buildProgram(exercise,code,grade=true){
 }
 export async function runCode(exercise,code,{grade=true,status=()=>{}}={}){
  const r=await getEngine(status);
- const missing=runtimePackages.filter(p=>!installedPackages.has(p));
- if(missing.length){status('Klargør '+missing.join(', ')+'…');let installTimer;try{await Promise.race([r.installPackages(missing),new Promise((_,reject)=>installTimer=setTimeout(()=>{resetEngine();reject(new Error('Pakkerne kunne ikke hentes. Kontrollér forbindelsen og prøv igen.'));},90000))]);}finally{clearTimeout(installTimer);}missing.forEach(p=>installedPackages.add(p));status('R og pakker er klar');}
+ const packages=requiredPackages(exercise,code,grade);
+ for(const pkg of packages.filter(p=>!installedPackages.has(p))){
+  const started=Date.now();status('Henter '+pkg+'… (0 sek.)');
+  const ticker=setInterval(()=>status('Henter '+pkg+'… ('+Math.floor((Date.now()-started)/1000)+' sek.). Du kan stoppe og prøve igen.'),1000);
+  let timer;try{
+   await Promise.race([r.installPackages([pkg]),new Promise((_,reject)=>timer=setTimeout(()=>{resetEngine();reject(new Error('Hentning af '+pkg+' tog for lang tid. Dit svar er gemt. Prøv igen, eller brug base R uden at hente pakker.'));},45000))]);
+   if(instance!==r)throw new Error('Indlæsningen blev stoppet. Dit svar er gemt.');
+   installedPackages.add(pkg);
+  }finally{clearTimeout(timer);clearInterval(ticker);}
+ }
+ status(packages.length?'R og de nødvendige pakker er klar':'R er klar');
  const shelter=await new r.Shelter();let timer;
  try{
   const capture=await Promise.race([shelter.captureR(buildProgram(exercise,code,grade),{captureGraphics:{width:620,height:380}}),new Promise((_,reject)=>timer=setTimeout(()=>{resetEngine();reject(new Error('Kørslen blev stoppet efter 15 sekunder. Se efter en uendelig løkke eller en meget stor beregning.'));},15000))]);
