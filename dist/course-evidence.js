@@ -1339,5 +1339,61 @@ Object.assign(courseEvidence, {
     "names": ["DALEW36/Pair Programming - Mandag.R"],
     "diff": ["Mikroindikator/Mikroindikator.R"],
     "sum": ["Terning/dice.R"]
+  },
+  "d-filter-columns": {
+    "filter": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "select": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "c": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"]
+  },
+  "d-add-flag": {
+    "mutate": ["Uge 40/Mandag.R"]
+  },
+  "d-filter-transform": {
+    "filter": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "mutate": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "select": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "arrange": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "c": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "order": ["Mikroindikator/Mikroindikator.R"]
+  },
+  "d-clean-rows": {
+    "data.frame": ["DALEW36/Pair Programming - Mandag.R"],
+    "c": ["DALEW36/Pair Programming - Mandag.R"],
+    "is.na": ["DALEW36/Onsdag.R"],
+    "filter": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "select": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"]
+  },
+  "d-group-summary": {
+    "aggregate": ["fredag2/fredag2.R"],
+    "mean": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "group_by": ["Uge 40/Mandag.R"],
+    "summarise": ["Uge 40/Mandag.R"]
+  },
+  "d-best-in-group": {
+    "aggregate": ["fredag2/fredag2.R"],
+    "max": ["Eksamensøvning/Eksamenstræningsopgaver - Svar.R"],
+    "merge": ["Mikroindikator/Mikroindikator.R"],
+    "group_by": ["Uge 40/Mandag.R"],
+    "filter": ["Uge 40/Mandag.R"]
+  },
+  "d-join-summary": {
+    "data.frame": ["DALEW36/Pair Programming - Mandag.R"],
+    "c": ["DALEW36/Pair Programming - Mandag.R"],
+    "merge": ["Mikroindikator/Mikroindikator.R"],
+    "aggregate": ["fredag2/fredag2.R"],
+    "names": ["DALEW36/Pair Programming - Mandag.R"],
+    "sum": ["Terning/dice.R"],
+    "left_join": ["OpenSky/GetPlanes.R"],
+    "filter": ["OpenSky/GetPlanes.R"],
+    "mutate": ["Uge 40/Mandag.R"],
+    "group_by": ["Uge 40/Mandag.R"],
+    "summarise": ["Uge 40/Mandag.R"]
+  },
+  "d-budget-reconcile": {
+    "data.frame": ["DALEW36/Pair Programming - Mandag.R"],
+    "c": ["DALEW36/Pair Programming - Mandag.R"],
+    "merge": ["Mikroindikator/Mikroindikator.R"],
+    "left_join": ["OpenSky/GetPlanes.R"],
+    "mutate": ["Uge 40/Mandag.R"]
   }
 });

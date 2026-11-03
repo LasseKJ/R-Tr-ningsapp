@@ -306,6 +306,10 @@
     "if": [
       "Mikroindikator/Mikroindikator.R",
       "OpenSky/util.R"
+    ],
+    "left_join": [
+      "02-11-2026 Tavle undervisning.R",
+      "OpenSky/GetPlanes.R"
     ]
   },
   "exercises": [

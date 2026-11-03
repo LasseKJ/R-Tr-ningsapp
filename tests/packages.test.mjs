@@ -4,7 +4,7 @@ import {exercises} from '../dist/course.js';
 import {packageOptions,enabledExercises,normalizePackages} from '../dist/packages.js';
 import {selectExam} from '../dist/progress.js';
 test('base R is default and multiple package selections add only matching exercises',()=>{
- const base=enabledExercises(exercises);assert.equal(base.length,75);
+ const base=enabledExercises(exercises);assert.equal(base.length,83);
  const selected=enabledExercises(exercises,['dplyr','jsonlite']);
  assert.ok(selected.some(e=>e.id==='pkg-filter'));assert.ok(selected.some(e=>e.id==='pkg-json'));
  assert.ok(!selected.some(e=>e.id==='pkg-str-c'||e.id==='pkg-combined'));
