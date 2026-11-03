@@ -1,12 +1,14 @@
 export const KEY='r-lab-progress-v1';
-export const emptyProgress=()=>({version:1,attempts:[],drafts:{},exams:[],activeExam:null,dailyGoal:5});
+export const emptyProgress=()=>({version:1,attempts:[],drafts:{},exams:[],reports:[],activeExam:null,dailyGoal:5});
 export function validateProgress(p){
  if(!p||p.version!==1||!Array.isArray(p.attempts)||p.attempts.length>100000||!Array.isArray(p.exams)||!p.drafts||typeof p.drafts!=='object'||Array.isArray(p.drafts)) throw new Error('Filen er ikke en gyldig R Lab-backup.');
  if(p.attempts.some(a=>!a||typeof a.exerciseId!=='string'||typeof a.correct!=='boolean'||!Number.isFinite(a.seconds)||a.seconds<0||!Number.isFinite(Date.parse(a.at))))throw new Error('Backup indeholder ugyldige forsøg.');
  if(Object.values(p.drafts).some(d=>typeof d!=='string')||p.exams.some(e=>!e||typeof e.id!=='string'||!Number.isFinite(e.score)||!Number.isFinite(e.total)||!Number.isFinite(Date.parse(e.at))))throw new Error('Backup indeholder ugyldige data.');
  if(p.activeExam && (!Array.isArray(p.activeExam.ids)||p.activeExam.ids.some(x=>typeof x!=='string')||!Number.isFinite(p.activeExam.endsAt)||typeof p.activeExam.id!=='string'||!p.activeExam.answers||typeof p.activeExam.answers!=='object'||Array.isArray(p.activeExam.answers)||!Number.isInteger(p.activeExam.index)||p.activeExam.index<0||p.activeExam.index>=p.activeExam.ids.length))throw new Error('Ugyldig eksamenssession.');
+ if(p.reports!==undefined&&(!Array.isArray(p.reports)||p.reports.length>10000||p.reports.some(r=>!r||typeof r.id!=='string'||typeof r.exerciseId!=='string'||typeof r.title!=='string'||typeof r.description!=='string'||r.description.length>5000||typeof r.code!=='string'||!Number.isFinite(Date.parse(r.at))||!['open','resolved'].includes(r.status))))throw new Error('Ugyldige fejlrapporter.');
  for(const e of [...p.exams,...(p.activeExam?[p.activeExam]:[])]){
   if(e.ids&&(!Array.isArray(e.ids)||e.ids.length>100||new Set(e.ids).size!==e.ids.length||e.ids.some(id=>typeof id!=='string')))throw new Error('Ugyldige eksamensopgaver.');
+  if(e.skipped!==undefined&&(!Array.isArray(e.skipped)||e.skipped.some(id=>!e.ids?.includes(id))||new Set(e.skipped).size!==e.skipped.length))throw new Error('Ugyldige oversprungne opgaver.');
   if(e.answers&&Object.values(e.answers).some(a=>!a||typeof a.correct!=='boolean'||typeof a.answer!=='string'))throw new Error('Ugyldige eksamenssvar.');
  }
  return {...emptyProgress(),...p,dailyGoal:[3,5,10].includes(p.dailyGoal)?p.dailyGoal:5};
@@ -40,4 +42,15 @@ export function selectExam(exercises,count=10,random=Math.random){
  const chosen=[];for(const topic of [...new Set(exercises.map(x=>x.topic))]){const ex=pool.find(x=>x.topic===topic);if(ex)chosen.push(ex);}
  for(const ex of pool)if(chosen.length<count&&!chosen.includes(ex))chosen.push(ex);
  return chosen.slice(0,count).map(x=>x.id);
+}
+
+export function skipExamQuestion(exam){
+ const id=exam.ids[exam.index];
+ if(!id)throw new Error('Ingen aktiv opgave.');
+ exam.skipped=[...new Set([...(exam.skipped||[]),id])];
+ delete exam.answers[id];exam.index++;
+}
+export function examScore(exam){
+ const skipped=new Set(exam.skipped||[]);
+ return {score:exam.ids.filter(id=>!skipped.has(id)&&exam.answers[id]?.correct).length,total:exam.ids.filter(id=>!skipped.has(id)).length};
 }

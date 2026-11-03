@@ -2,12 +2,13 @@
 import {pathToFileURL} from 'node:url';
 import assert from 'node:assert/strict';
 import {exercises,makeVariant} from '../dist/course.js';
-import {buildProgram} from '../dist/engine.js';
+import {buildProgram,runtimePackages} from '../dist/engine.js';
 const {WebR}=await import(process.env.WEBR_MODULE?pathToFileURL(process.env.WEBR_MODULE).href:'webr');
 const r=new WebR();await r.init();
 const check=code=>r.evalRBoolean(code,{captureStreams:true});
 let passed=0;
 try{
+ await r.installPackages(runtimePackages);
  for(const ex of [...exercises,...Array.from({length:16},(_,i)=>makeVariant(i))].filter(e=>!['choice','output'].includes(e.kind))){
   if(ex.packages?.length)await r.installPackages(ex.packages);
   const result=await check(buildProgram(ex,ex.solution));assert.equal(result,true,`Solution rejected: ${ex.id}`);
@@ -27,6 +28,10 @@ try{
  assert.equal(await check(buildProgram(temp,'C_TIL_F <- function(x) x * 9/5 + 32')),true);
  assert.equal(await check(buildProgram(exercises[0],'Alder <- 15:50; Alder')),true);
  const equivalentCases=[
+ ['d-drop','select(biler, -disp, -carb)',true],
+ ['d-drop','biler |> select(-disp, -carb)',true],
+ ['f-hp','filter(biler, hp > 150)',true],
+ ['d-kw','biler <- mutate(biler, hp_kw = hp * 0.7457)',true],
  ['f-hp','subset(biler, hp > 150)[nrow(subset(biler, hp > 150)):1, ]',true],
  ['f-hp','subset(biler, hp > 150)[, rev(names(biler))]',true],
  ['f-hp','subset(biler, hp > 150)[rep(1, nrow(subset(biler, hp > 150))), ]',false],

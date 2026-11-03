@@ -5,6 +5,7 @@ export function mergeGuest(account,guest){
  return validateProgress({...account,
   attempts:unique(account.attempts,guest.attempts,x=>x.id||JSON.stringify(x)).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)),
   exams:unique(account.exams,guest.exams,x=>x.id).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)),
+  reports:unique(account.reports||[],guest.reports||[],x=>x.id).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)),
   drafts:{...guest.drafts,...account.drafts},activeExam:account.activeExam||guest.activeExam});
 }
 
