@@ -17,5 +17,12 @@ try{
  const filter=exercises.find(e=>e.id==='f-and');assert.equal(await r.evalRBoolean(buildProgram(filter,'biler[biler$cyl == 4 | biler$mpg > 20, ]')),false);
  const loop=exercises.find(e=>e.id==='u-loop');assert.equal(await r.evalRBoolean(buildProgram(loop,'total <- sum(priser)')),false);
  assert.equal(await r.evalRBoolean(buildProgram(exercises[0],'alder = 15:50')),true);
+ const matrix=exercises.find(e=>e.id==='v-matrix');
+ assert.equal(await check(buildProgram(matrix,'M = matrix(1:6, 3, 2); M')),true);
+ const income=exercises.find(e=>e.id==='v-income');
+ assert.equal(await check(buildProgram(income,'Indkomst = seq(10000, by = 5000, length.out = 36)')),true);
+ assert.equal(await check(buildProgram(income,'INDKOMST <- seq(10000, by=5000, length.out=35)')),false);
+ assert.equal(await check(buildProgram(temp,'C_TIL_F <- function(x) x * 9/5 + 32')),true);
+ assert.equal(await check(buildProgram(exercises[0],'Alder <- 15:50; Alder')),true);
  console.log(`Verified ${passed} R solutions and negative cases, plus alternate syntax and targeted regressions.`);
 }finally{r.close();}

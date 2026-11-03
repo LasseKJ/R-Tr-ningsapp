@@ -19,6 +19,36 @@ export function buildProgram(exercise,code,grade=true){
    eval(parse(text = ${setup}), envir = .env)
    eval(parse(text = ${setup}), envir = .ref)
    .expr <- parse(text = ${submitted})
+   # Match exercise object names without changing strings, function names or R syntax.
+   .canonical <- character()
+   .collect <- function(x) {
+     if (missing(x)) return(NULL)
+     if (is.call(x) && as.character(x[[1]])[1] %in% c("<-", "=", "<<-")) {
+       if (is.symbol(x[[2]])) .canonical <<- c(.canonical, as.character(x[[2]]))
+     }
+     if (is.call(x) || is.expression(x)) for (i in seq_along(x)) {
+       if (!identical(x[[i]], quote(expr = ))) .collect(x[[i]])
+     }
+   }
+   .collect(parse(text = ${setup}))
+   .collect(parse(text = ${solution}))
+   .canonical <- unique(.canonical)
+   .normalize <- function(x) {
+     if (missing(x)) return(NULL)
+     if (is.symbol(x)) {
+       i <- match(tolower(as.character(x)), tolower(.canonical))
+       if (!is.na(i)) return(as.name(.canonical[[i]]))
+     } else if (is.call(x) || is.expression(x)) {
+       for (i in seq_along(x)) {
+         if (identical(x[[i]], quote(expr = ))) next
+         # Preserve literal column names after $ and @.
+         if (is.call(x) && as.character(x[[1]])[1] %in% c("$", "@") && i == 3L) next
+         x[i] <- list(.normalize(x[[i]]))
+       }
+     }
+     x
+   }
+   .expr <- .normalize(.expr)
    .value <- withVisible(eval(.expr, envir = .env))
    if (.value$visible) print(.value$value)
    .env$.answer <- .value$value

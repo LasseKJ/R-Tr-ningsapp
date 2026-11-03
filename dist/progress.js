@@ -22,7 +22,13 @@ export function summary(progress,exercises,now=new Date()){
  return {attempts:a.length,solved,accuracy:a.length?Math.round(a.filter(x=>x.correct).length/a.length*100):0,firstAccuracy:first.size?Math.round([...first.values()].filter(x=>x.correct&&!x.hinted&&!x.revealed).length/first.size*100):0,today:new Set(today.filter(x=>x.correct&&!x.revealed).map(x=>x.exerciseId)).size,streak,minutes:Math.round(a.reduce((s,x)=>s+x.seconds,0)/60),topics:Object.fromEntries([...new Set(exercises.map(x=>x.topic))].map(t=>{const ids=exercises.filter(x=>x.topic===t).map(x=>x.id);const attempts=a.filter(x=>ids.includes(x.exerciseId)||(!known.has(x.exerciseId)&&x.topic===t));return[t,{total:ids.length,solved:ids.filter(id=>solved.has(id)).length,attempts:attempts.length,accuracy:attempts.length?Math.round(attempts.filter(x=>x.correct).length/attempts.length*100):null}];}))};
 }
 export function normalizeOutput(value){return String(value).trim().replace(/^\[1\]\s*/,'').replace(/^c\((.*)\)$/s,'$1').replace(/[",]/g,' ').replace(/\s+/g,' ').trim();}
-export function gradeText(exercise,value){return exercise.kind==='choice'?Number(value)===exercise.answer:normalizeOutput(value)===normalizeOutput(exercise.answer);}
+export function gradeText(exercise,value){
+ if(exercise.kind==='choice')return Number(value)===exercise.answer;
+ const actual=normalizeOutput(value),expected=normalizeOutput(exercise.answer);
+ if(exercise.orderMatters!==false)return actual===expected;
+ const tokens=s=>s.split(' ').sort();
+ return JSON.stringify(tokens(actual))===JSON.stringify(tokens(expected));
+}
 export function selectExam(exercises,count=10,random=Math.random){
  const pool=[...exercises];for(let i=pool.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
  const chosen=[];for(const topic of [...new Set(exercises.map(x=>x.topic))]){const ex=pool.find(x=>x.topic===topic);if(ex)chosen.push(ex);}
