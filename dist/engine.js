@@ -101,6 +101,32 @@ export function buildProgram(exercise,code,grade=true){
    }
    .env$.answer <- .value$value
    .env$.user_expr <- .expr
+   .env$.plot_matches <- function(actual, expected, geom, columns, separate_colours = FALSE) {
+     tryCatch({
+       if (!inherits(actual, "ggplot") || !inherits(expected, "ggplot")) return(FALSE)
+       layer <- which(vapply(actual$layers, function(x) inherits(x$geom, geom), logical(1)))
+       if (length(layer) != 1L || !inherits(actual$coordinates, "CoordCartesian") || inherits(actual$coordinates, "CoordFlip")) return(FALSE)
+       a <- ggplot2::ggplot_build(actual)$data[[layer]]
+       b <- ggplot2::ggplot_build(expected)$data[[1]]
+       if (!all(columns %in% names(a)) || nrow(a) != nrow(b)) return(FALSE)
+       if (separate_colours && length(unique(a$colour)) != length(unique(b$colour))) return(FALSE)
+       if (geom == "GeomLine") {
+         # Compare complete lines, so group IDs and palette choices may differ.
+         normalize_groups <- function(data) {
+           groups <- lapply(split(data[, c("x", "y"), drop = FALSE], data$group), function(g) {
+             g <- g[order(g$x, g$y), , drop = FALSE]; rownames(g) <- NULL; g
+           })
+           keys <- vapply(groups, function(g) paste(unlist(g), collapse = ","), character(1))
+           unname(groups[order(keys)])
+         }
+         return(isTRUE(all.equal(normalize_groups(a), normalize_groups(b), tolerance = 1e-7)))
+       }
+       a <- a[, columns, drop = FALSE]; b <- b[, columns, drop = FALSE]
+       a <- a[do.call(order, unname(a)), , drop = FALSE]; b <- b[do.call(order, unname(b)), , drop = FALSE]
+       rownames(a) <- NULL; rownames(b) <- NULL
+       isTRUE(all.equal(a, b, tolerance = 1e-7))
+     }, error = function(e) FALSE)
+   }
    .equivalent <- function(actual, expected) {
      if (is.data.frame(actual) && is.data.frame(expected)) {
        actual <- as.data.frame(actual); expected <- as.data.frame(expected)

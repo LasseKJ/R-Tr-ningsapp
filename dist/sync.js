@@ -6,6 +6,7 @@ export function mergeGuest(account,guest){
   attempts:unique(account.attempts,guest.attempts,x=>x.id||JSON.stringify(x)).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)),
   exams:unique(account.exams,guest.exams,x=>x.id).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)),
   reports:unique(account.reports||[],guest.reports||[],x=>x.id).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)),
+  revealedDrafts:Object.fromEntries([...new Set([...Object.keys(guest.drafts),...Object.keys(account.drafts)])].map(key=>[key,(Object.hasOwn(account.drafts,key)?account.revealedDrafts?.[key]:guest.revealedDrafts?.[key])||false])),
   drafts:{...guest.drafts,...account.drafts},activeExam:account.activeExam||guest.activeExam});
 }
 

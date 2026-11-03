@@ -65,6 +65,12 @@ export function solutionOptions(ex){
  if(['choice','output'].includes(ex.kind))return [option('Svar',ex.solution)];
  const primary=option(ex.packages?.length?ex.packages.join(' + '):'Base R',ex.solution);
  let extra=alternatives[ex.id]||[];
+ if(ex.id.startsWith('gg-')) {
+   const geom=ex.solution.includes('geom_boxplot')?'geom_boxplot':'geom_line';
+   const pattern=/ggplot\((\w+), aes\((.*)\)\) \+ geom_\w+\(\)/;
+   const match=ex.solution.match(pattern);
+   if(match)extra=[option('ggplot2 · aes i laget',`ggplot(${match[1]}) + ${geom}(aes(${match[2]}))`),option('ggplot2 med pipe',`${match[1]} |> ggplot(aes(${match[2]})) + ${geom}()`)];
+ }
  if(ex.id.startsWith('variant-')){
   const filter=ex.solution.match(/^biler\[biler\$hp > (\d+), \]$/);
   if(filter)extra=[base(`subset(biler, hp > ${filter[1]})`),dplyr(`dplyr::filter(biler, hp > ${filter[1]})`)];

@@ -18,3 +18,5 @@
 .report-form textarea{display:block;box-sizing:border-box;width:100%;padding:12px;margin:12px 0 16px;border:1px solid var(--line);border-radius:8px;resize:vertical;font:inherit;color:inherit;background:#fff}.review-item pre{white-space:pre-wrap;overflow-wrap:anywhere}.review-item summary{overflow-wrap:anywhere}
 
 .solution-option{margin-top:18px;padding-top:12px;border-top:1px solid var(--line)}.solution-option h4{margin:0 0 8px;font-size:13px;color:var(--text)}.solution-option pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 12px}
+
+pre,code,.code-editor,.setup-code,.solution-option pre{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}.source-path{font-family:monospace;font-size:11px!important;overflow-wrap:anywhere}.source-functions{font-family:monospace;overflow-wrap:anywhere}.source-grid h3{overflow-wrap:anywhere}

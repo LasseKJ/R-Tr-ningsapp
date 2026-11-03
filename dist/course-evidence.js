@@ -1234,3 +1234,61 @@ export const courseEvidence = {
     ]
   }
 };
+
+Object.assign(courseEvidence, {
+  "gg-line": {
+    "ggplot": [
+      "Uge 40/Mandag.R"
+    ],
+    "aes": [
+      "Uge 40/Mandag.R"
+    ],
+    "geom_line": [
+      "Uge 40/Mandag.R"
+    ]
+  },
+  "gg-groups": {
+    "ggplot": [
+      "Uge 40/Mandag.R"
+    ],
+    "aes": [
+      "Uge 40/Mandag.R"
+    ],
+    "geom_line": [
+      "Uge 40/Mandag.R"
+    ]
+  },
+  "gg-debug-axes": {
+    "ggplot": [
+      "Uge 40/Mandag.R"
+    ],
+    "aes": [
+      "Uge 40/Mandag.R"
+    ],
+    "geom_line": [
+      "Uge 40/Mandag.R"
+    ]
+  },
+  "gg-box": {
+    "ggplot": [
+      "DALEW36/Onsdag.R"
+    ],
+    "aes": [
+      "DALEW36/Onsdag.R"
+    ],
+    "geom_boxplot": [
+      "DALEW36/Onsdag.R"
+    ]
+  },
+  "gg-box-groups": {
+    "ggplot": [
+      "DALEW36/Onsdag.R"
+    ],
+    "aes": [
+      "DALEW36/Onsdag.R"
+    ],
+    "geom_boxplot": [
+      "DALEW36/Onsdag.R"
+    ]
+  }
+});

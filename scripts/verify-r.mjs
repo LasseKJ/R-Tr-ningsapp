@@ -29,6 +29,17 @@ try{
  assert.equal(await check(buildProgram(income,'INDKOMST <- seq(10000, by=5000, length.out=35)')),false);
  assert.equal(await check(buildProgram(temp,'C_TIL_F <- function(x) x * 9/5 + 32')),true);
  assert.equal(await check(buildProgram(exercises[0],'Alder <- 15:50; Alder')),true);
+ const plotCases=[
+ ['gg-line','ggplot(udvikling, aes(TID, value)) + geom_line(colour = "blue")',true],
+ ['gg-line','ggplot(udvikling, aes(value, TID)) + geom_line()',false],
+ ['gg-line','ggplot(udvikling, aes(TID, value)) + geom_boxplot()',false],
+ ['gg-groups','ggplot(udvikling, aes(TID, value, colour=OMRÅDE)) + geom_line()',true],
+ ['gg-groups','ggplot(udvikling, aes(TID, value, group=1)) + geom_line()',false],
+ ['gg-groups','ggplot(udvikling, aes(TID, value, group=OMRÅDE)) + geom_line(colour="blue")',false],
+ ['gg-box','ggplot(priser, aes(y=price)) + geom_boxplot(fill="blue")',true],
+ ['gg-box-groups','ggplot(priser, aes(y=price)) + geom_boxplot()',false]
+ ];
+ for(const [id,code,expected] of plotCases)assert.equal(await check(buildProgram(exercises.find(e=>e.id===id),code)),expected,`Plot validation: ${id}: ${code}`);
  const equivalentCases=[
  ['d-drop','select(biler, -disp, -carb)',true],
  ['d-drop','biler |> select(-disp, -carb)',true],
