@@ -322,7 +322,118 @@ export const teachingSources = [
     "description": "Månedlige værdier for forbrugertillidsindikatoren fra 2006 og frem. Kildedata til opgaven om ændringer fra måned til måned.",
     "functions": []
   }
-];
+,[
+  {
+    "path": "OLA2GRP4-main/OPG1.1",
+    "description": "BY3-folketal: hent bydata og fjern rækker efter tekst og indbyggertal.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG1.2",
+    "description": "Bykategorier med mutate() og case_when().",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG1.3",
+    "description": "Rens boligdata, standardisér bynavne, aggregér og flet datasæt.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG1.4",
+    "description": "Gruppér boligpriser og tegn søjlediagram med ggplot2.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG2.1 REVIDERET",
+    "description": "Kvartalsdata, årlig vækst, modeller og figurer.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG2.2 REVIDERET",
+    "description": "Modelprognoser for forbrugertillid og visualisering.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG3.1",
+    "description": "Saml og udvælg DI- og DST-modelprognoser.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG3.2",
+    "description": "Beregn residualer og vis forskelle mellem modeller.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG3.3",
+    "description": "Beregn RSS og TSS for regressionsmodeller.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG4.3",
+    "description": "Vend lange kvartalstabeller til brede data frames.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG4.4",
+    "description": "Loop over indikatorer, modeller og grafdata.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG5.1",
+    "description": "Bearbejd Eurostat-data, lav kolonner og brug lag() til vækst.",
+    "functions": []
+  },
+  {
+    "path": "OLA2GRP4-main/OPG5.4",
+    "description": "Gruppér, beregn gennemsnit og tegn søjlediagram.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 1.2.r",
+    "description": "Vælg forklarende variable og opbyg en regressionsformel.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 1.3.r",
+    "description": "Del indikatorstrenge og tæl forekomsten af spørgsmål.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 1.4.r",
+    "description": "Saml månedsdata i kvartaler og forbered prognoser.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 2.1.r",
+    "description": "Multipel regression og komponentregression med pls.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 2.3.r",
+    "description": "Lav en prognose fra en komponentmodel.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 3.1 og 3.2.r",
+    "description": "Forbered privatforbrugsdata, beregn vækst og sammenlign prognoser.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 4.1.r",
+    "description": "Beregn modelstabilitet med indlejrede for-løkker.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/opg4 rul",
+    "description": "Beregn R² i rullende tidsvinduer med løkker.",
+    "functions": []
+  },
+  {
+    "path": "OLA3-GRP4-main/Opgave 5.2.r",
+    "description": "Hent DMI-observationer, læs JSON og bearbejd vejrdata.",
+    "functions": []
+  }
+]];
 export const documentationSources = [
   {
     "name": "R · base R",
@@ -374,6 +485,8 @@ const folderDescriptions={
  'EuroStat':'Filtrering af data og søgning efter mønstre i tekst med stringr.',
  'Terning':'Simulation af terningekast med tilfældige træk, gentagelser og beregning af summer.',
  'fredag2':'Omregning og afrunding med ceiling() samt beregninger pr. gruppe med aggregate().',
+  'OLA2GRP4-main':'OLA 2-gruppemateriale: by- og boligdata, tidsserier, prognoser, regression, løkker og ggplot2. Træningsopgaverne bruger lokale eksempeldatasæt.',
+  'OLA3-GRP4-main':'OLA 3-gruppemateriale: indikatorer, regression, stabilitet, løkker og DMI-JSON. Træningsopgaverne bruger lokale eksempeldatasæt.',
  '':'Fælles materiale uden en overordnet mappe: tavleundervisning om JSON, tekst, filtrering og statistik samt generelle hjælpefunktioner.'
 };
 export const sourceFolders=Object.entries(folderDescriptions).map(([path,description])=>({
