@@ -316,6 +316,11 @@ export const teachingSources = [
       "function",
       "list"
     ]
+  },
+  {
+    "path": "Uge37/Forbrugerforventninger.csv",
+    "description": "Månedlige værdier for forbrugertillidsindikatoren fra 2006 og frem. Kildedata til opgaven om ændringer fra måned til måned.",
+    "functions": []
   }
 ];
 export const documentationSources = [
@@ -360,7 +365,7 @@ documentationSources.push({name:'R · statistik',url:'https://stat.ethz.ch/R-man
 const folderDescriptions={
  'DALE26W35':'Introduktion til R med vektorer, pakker og egne funktioner.',
  'DALEW36':'Grundlæggende datastrukturer: lister, matricer og data frames. Indeholder også pair programming, datastruktur, manglende værdier, statistik og boksplot.',
- 'Uge37':'Pair programming med filtrering, gennemsnit, løkker og sammenkobling af data samt testmateriale til terningesimulationer.',
+ 'Uge37':'Pair programming med filtrering, gennemsnit og løkker. Mappen indeholder også månedlige forbrugertillidsdata og testmateriale til terningesimulationer.',
  'DALE26W38':'Arbejde med vektorer, lister og indlæsning af pakker.',
  'Uge 40':'Bearbejdning af data med dplyr: filtrering, nye kolonner, gruppering og opsummering. Linjeplot bruges til at sammenligne udvikling mellem områder.',
  'Eksamensøvning':'Samlede eksamenstræningsopgaver med både løsningsforsøg og svar. Dækker undersøgelse af datasæt, udvælgelse, filtrering, sortering, nye variabler og beskrivende statistik.',

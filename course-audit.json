@@ -27,7 +27,8 @@
     "Uge37/PairProgrammering10/PairProgramming1009.R",
     "Uge37/Test/hej.R",
     "Uge37/Test/Terning.R",
-    "util.r"
+    "util.r",
+    "Uge37/Forbrugerforventninger.csv"
   ],
   "functions": {
     "library": [
@@ -287,6 +288,24 @@
     ],
     "summarise": [
       "Uge 40/Mandag.R"
+    ],
+    "rep": [
+      "DALEW36/Pair Programming - Mandag.R",
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "seq_along": [
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "unique": [
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/GetPlanes.R"
+    ],
+    "diff": [
+      "Mikroindikator/Mikroindikator.R"
+    ],
+    "if": [
+      "Mikroindikator/Mikroindikator.R",
+      "OpenSky/util.R"
     ]
   },
   "exercises": [

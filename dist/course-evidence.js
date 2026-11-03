@@ -1290,5 +1290,54 @@ Object.assign(courseEvidence, {
     "geom_boxplot": [
       "DALEW36/Onsdag.R"
     ]
+  },
+  "u-loop-vector": {
+    "for": ["Uge37/PairProgrammering10/PairProgramming1009.R"],
+    "rep": ["DALEW36/Pair Programming - Mandag.R", "Mikroindikator/Mikroindikator.R"],
+    "seq_along": ["Mikroindikator/Mikroindikator.R"],
+    "if": ["Mikroindikator/Mikroindikator.R"]
+  },
+  "u-loop-rows": {
+    "for": ["Uge37/PairProgrammering10/PairProgramming1009.R"],
+    "rep": ["DALEW36/Pair Programming - Mandag.R", "Mikroindikator/Mikroindikator.R"],
+    "nrow": ["DALEW36/Pair Programming - Mandag.R"],
+    "seq_along": ["Mikroindikator/Mikroindikator.R"]
+  },
+  "u-loop-list": {
+    "for": ["Uge37/PairProgrammering10/PairProgramming1009.R"],
+    "rep": ["DALEW36/Pair Programming - Mandag.R", "Mikroindikator/Mikroindikator.R"],
+    "length": ["DALEW36/Pair Programming - Mandag.R"],
+    "names": ["DALEW36/Pair Programming - Mandag.R"],
+    "seq_along": ["Mikroindikator/Mikroindikator.R"],
+    "mean": ["DALEW36/Benchmark.R"]
+  },
+  "u-loop-matrix": {
+    "for": ["Uge37/PairProgrammering10/PairProgramming1009.R"],
+    "rep": ["DALEW36/Pair Programming - Mandag.R", "Mikroindikator/Mikroindikator.R"],
+    "nrow": ["DALEW36/Pair Programming - Mandag.R"],
+    "seq_along": ["Mikroindikator/Mikroindikator.R"]
+  },
+  "u-loop-time": {
+    "for": ["Mikroindikator/Mikroindikator.R"],
+    "rep": ["DALEW36/Pair Programming - Mandag.R", "Mikroindikator/Mikroindikator.R"],
+    "length": ["DALEW36/Pair Programming - Mandag.R"]
+  },
+  "u-loop-sim": {
+    "for": ["Mikroindikator/Mikroindikator.R"],
+    "unique": ["OpenSky/GetPlanes.R"],
+    "rep": ["DALEW36/Pair Programming - Mandag.R", "Mikroindikator/Mikroindikator.R"],
+    "length": ["DALEW36/Pair Programming - Mandag.R"],
+    "names": ["DALEW36/Pair Programming - Mandag.R"],
+    "sum": ["Terning/dice.R"],
+    "seq_along": ["Mikroindikator/Mikroindikator.R"]
+  },
+  "u-loop-flights": {
+    "for": ["Uge37/PairProgrammering10/PairProgramming1009.R"],
+    "unique": ["OpenSky/GetPlanes.R"],
+    "rep": ["DALEW36/Pair Programming - Mandag.R", "Mikroindikator/Mikroindikator.R"],
+    "length": ["DALEW36/Pair Programming - Mandag.R"],
+    "names": ["DALEW36/Pair Programming - Mandag.R"],
+    "diff": ["Mikroindikator/Mikroindikator.R"],
+    "sum": ["Terning/dice.R"]
   }
 });

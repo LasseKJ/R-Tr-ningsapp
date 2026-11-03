@@ -5,7 +5,7 @@ import {exercises,makeVariant} from '../dist/course.js';
 const audit=JSON.parse(fs.readFileSync(new URL('../course-audit.json',import.meta.url),'utf8'));
 const calls=s=>[...s.replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*/g,' ').matchAll(/\b([A-Za-z][\w.]*)\s*\(/g)].map(m=>m[1]);
 test('all exercises and variant families use functions evidenced outside OLA folders',()=>{
- assert.equal(audit.files.length,27);
+ assert.equal(audit.files.length,28);
  for(const path of audit.files)assert.ok(!path.split('/').some(p=>/^ola/i.test(p)),path);
  for(const ex of [...exercises,...Array.from({length:100},(_,i)=>makeVariant(i))]){
   for(const name of calls([ex.setup,ex.solution,ex.starter].join('\n'))){

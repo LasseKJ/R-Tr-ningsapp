@@ -155,6 +155,32 @@ export function buildProgram(exercise,code,grade=true){
      }
      isTRUE(all.equal(actual, expected, tolerance = 1e-7))
    }
+   .loop_instrument <- function(x) {
+     if (is.call(x) && identical(x[[1]], as.name("for"))) {
+       x[[4]] <- .loop_instrument(x[[4]])
+       x[[4]] <- substitute({ .loop_steps <- .loop_steps + 1L; BODY }, list(BODY = x[[4]]))
+       return(x)
+     }
+     if (is.call(x) || is.expression(x)) for (i in seq_along(x)) {
+       if (!identical(x[[i]], quote(expr = ))) x[[i]] <- .loop_instrument(x[[i]])
+     }
+     x
+   }
+   .loop_matches <- function(expr, output_name, fixtures) {
+     if (!any(all.names(expr) == "for")) return(FALSE)
+     all(vapply(fixtures, function(fixture) tryCatch({
+       test_env <- new.env(parent = globalenv())
+       reference_env <- new.env(parent = globalenv())
+       eval(parse(text = fixture$setup), envir = test_env)
+       eval(parse(text = fixture$setup), envir = reference_env)
+       test_env$.loop_steps <- 0L
+       eval(.loop_instrument(expr), envir = test_env)
+       if (test_env$.loop_steps < 1L || !exists(output_name, test_env, inherits = FALSE)) return(FALSE)
+       eval(parse(text = fixture$reference), envir = reference_env)
+       .equivalent(get(output_name, test_env, inherits = FALSE), get(output_name, reference_env, inherits = FALSE))
+     }, error = function(e) FALSE), logical(1)))
+   }
+   .env$.loop_matches <- .loop_matches
    ${grade?` .expected <- eval(parse(text = ${solution}), envir = .ref)
    .env$.expected <- .expected
    .ok <- tryCatch(isTRUE(${exercise.check?`eval(parse(text = ${JSON.stringify(exercise.check)}), envir = .env)`:'.equivalent(.value$value, .expected)'}), error = function(e) FALSE)
