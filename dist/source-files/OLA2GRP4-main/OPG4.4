@@ -1,0 +1,309 @@
+# --------------------------------------------------
+# data prep
+# --------------------------------------------------
+
+library(dkstat)
+library(stats)
+
+
+# Henter metadata
+fti_meta <- dst_meta(
+  table = "FORV1",
+  lang = "da"
+)
+
+names(fti_meta$values) <- toupper(names(fti_meta$values))
+
+
+# --------------------------------------------------
+# vælger de 5 indikatorer
+# --------------------------------------------------
+
+fti_filter <- rep(list("*"), length(fti_meta$values))
+names(fti_filter) <- names(fti_meta$values)
+
+fti_filter[["INDIKATOR"]] <- c(
+  "Forbrugertillidsindikatoren",
+  "Familiens økonomiske situation i dag, sammenlignet med for et år siden",
+  "Danmarks økonomiske situation i dag, sammenlignet med for et år siden",
+  "Anskaffelse af større forbrugsgoder, fordelagtigt for øjeblikket",
+  "Anskaffelse af større forbrugsgoder, inden for de næste 12 mdr."
+)
+
+
+# --------------------------------------------------
+# henter data
+# --------------------------------------------------
+
+fti <- dst_get_data(
+  table = "FORV1",
+  query = fti_filter,
+  lang = "da",
+  parse_dst_tid = FALSE
+)
+
+
+# Beholder kun 2000 og frem
+fti <- fti[
+  fti$TID >= "2000M01",
+]
+
+
+# --------------------------------------------------
+# måneder til kvartaler
+# --------------------------------------------------
+
+fti$aar <- as.numeric(substr(fti$TID, 1, 4))
+
+fti$maaned <- as.numeric(substr(fti$TID, 6, 7))
+
+fti$kvartal <- ceiling(
+  fti$maaned / 3
+)
+
+fti$TID_kvt <- paste0(
+  fti$aar,
+  "K",
+  fti$kvartal
+)
+
+# --------------------------------------------------
+# finder gennemsnit
+# --------------------------------------------------
+fti_kvt <- aggregate(
+  value ~ TID_kvt + INDIKATOR,
+  data = fti,
+  FUN = mean,
+  na.rm = TRUE
+)
+
+
+# --------------------------------------------------
+# indikatorer til kolonner
+# --------------------------------------------------
+fti_bred <- reshape(
+  fti_kvt,
+  idvar = "TID_kvt",
+  timevar = "INDIKATOR",
+  direction = "wide"
+)
+
+fti_bred <- fti_bred[
+  order(fti_bred$TID_kvt),
+]
+
+# --------------------------------------------------
+# Resultatet
+# --------------------------------------------------
+View(fti_bred)
+
+names(fti_bred)
+
+# --------------------------------------------------
+# giver kolonner navne
+# --------------------------------------------------
+names(fti_bred) <- c(
+  "TID",
+  "DST_FTI",
+  "F10",
+  "F2",
+  "F4",
+  "F9"
+)
+
+
+# --------------------------------------------------
+#beregner DI's fti
+# --------------------------------------------------
+fti_bred$DI_FTI <- rowMeans(
+  fti_bred[, c("F2", "F4", "F9", "F10")],
+  na.rm = TRUE
+)
+
+# --------------------------------------------------
+#Beholder kun det vi skal bruge til regressionerne
+# --------------------------------------------------
+fti_bred <- fti_bred[, c(
+  "TID",
+  "DST_FTI",
+  "DI_FTI"
+)]
+
+View(fti_bred)
+
+# --------------------------------------------------
+# samler forbrug og forbrugertillid
+# --------------------------------------------------
+
+data_44 <- merge(
+  forbrug_bred,
+  fti_bred,
+  by = "TID"
+)
+
+# --------------------------------------------------
+# Sorterer efter kvartal
+# --------------------------------------------------
+data_44 <- data_44[
+  order(data_44$TID),
+]
+
+View(data_44)
+
+forbrugsgrupper <- setdiff(
+  names(data_44),
+  c("TID", "DST_FTI", "DI_FTI")
+)
+
+forbrugsgrupper
+length(forbrugsgrupper)
+
+# --------------------------------------------------
+# Fjerner CPT i alt
+# --------------------------------------------------
+forbrugsgrupper <- setdiff(
+  names(data_44),
+  c("TID", "DST_FTI", "DI_FTI", "CPT I alt")
+)
+
+forbrugsgrupper
+length(forbrugsgrupper)
+# --------------------------------------------------
+# 15 regressioner med DST
+# --------------------------------------------------
+
+summary_DST <- list()
+
+for (gruppe in forbrugsgrupper) {
+  
+  model <- lm(
+    data_44[[gruppe]] ~ data_44$DST_FTI
+  )
+  
+  summary_DST[[gruppe]] <- summary(model)
+}
+
+
+# --------------------------------------------------
+# 15 regressioner med DI
+# --------------------------------------------------
+
+summary_DI <- list()
+
+for (gruppe in forbrugsgrupper) {
+  
+  model <- lm(
+    data_44[[gruppe]] ~ data_44$DI_FTI
+  )
+  
+  summary_DI[[gruppe]] <- summary(model)
+}
+
+
+# Tjekker antal
+length(summary_DST)
+length(summary_DI)
+
+# --------------------------------------------------
+# R-squared
+# --------------------------------------------------
+
+# Tomme vektorer
+r2_DST <- c()
+r2_DI <- c()
+
+# Henter R-squared fra hver regression
+for (gruppe in forbrugsgrupper) {
+  
+  r2_DST[gruppe] <- summary_DST[[gruppe]]$r.squared
+  
+  r2_DI[gruppe] <- summary_DI[[gruppe]]$r.squared
+}
+
+
+# Samler resultaterne
+r2_resultater <- data.frame(
+  Forbrugsgruppe = forbrugsgrupper,
+  DST = r2_DST,
+  DI = r2_DI
+)
+
+View(r2_resultater)
+
+# --------------------------------------------------
+# henter p-værdier
+# --------------------------------------------------
+
+p_DST <- c()
+p_DI <- c()
+
+for (gruppe in forbrugsgrupper) {
+  
+  p_DST[gruppe] <- summary_DST[[gruppe]]$coefficients[2, 4]
+  
+  p_DI[gruppe] <- summary_DI[[gruppe]]$coefficients[2, 4]
+}
+
+
+# Tilføjer dem til vores resultattabel
+r2_resultater$p_DST <- p_DST
+r2_resultater$p_DI <- p_DI
+
+View(r2_resultater)
+# Beholder signifikante regressioner
+signifikante <- r2_resultater[
+  r2_resultater$p_DST < 0.05 |
+    r2_resultater$p_DI < 0.05,
+]
+
+# --------------------------------------------------
+# graf
+# --------------------------------------------------
+graf_DST <- data.frame(
+  gruppe = signifikante$Forbrugsgruppe,
+  indikator = "DST",
+  r2 = signifikante$DST,
+  p = signifikante$p_DST
+)
+
+graf_DI <- data.frame(
+  gruppe = signifikante$Forbrugsgruppe,
+  indikator = "DI",
+  r2 = signifikante$DI,
+  p = signifikante$p_DI
+)
+
+graf_data <- rbind(graf_DST, graf_DI)
+
+# Beholder kun dem der faktisk er signifikante
+graf_data <- graf_data[graf_data$p < 0.05, ]
+
+
+library(ggplot2)
+
+ggplot(graf_data,
+       aes(x = gruppe,
+           y = r2,
+           fill = indikator)) +
+  
+  geom_col(position = position_dodge(width = 0.9)) +
+  
+  geom_text(
+    aes(label = paste0(round(r2 * 100, 1), "%")),
+    position = position_dodge(width = 0.9),
+    hjust = 1.2
+  ) +
+  
+  labs(
+    title = "Signifikante sammenhænge mellem forbrug og forbrugertillid",
+    x = "Forbrugsgruppe",
+    y = "Forklaringsgrad (R²)",
+    fill = "Indikator"
+  ) +
+  
+  scale_y_continuous(
+    labels = function(x) paste0(x * 100, "%")
+  ) +
+  
+  theme_minimal() +
+  coord_flip()

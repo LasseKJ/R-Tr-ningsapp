@@ -1,0 +1,180 @@
+#OPG2.2
+
+#henter automatisk dst-fti for 2026K3
+ny_DST <- DST_FTI[
+  DST_FTI$Tidsinterval == "2026K3",
+  "DST_FTI",
+  drop = FALSE
+]
+
+#Forudsig den årlige realvækst
+forudsig_DST_2026K3 <- predict(
+  model_DST,
+  newdata = ny_DST
+)
+
+forudsig_DST_2026K3
+
+
+#henter automatisk di-fti for 2026K3
+ny_DI <- DIFTI_kvt[
+  DIFTI_kvt$Tidsinterval == "2026K3",
+  "DI_FTI",
+  drop = FALSE
+]
+
+#forudsig den årlige realvækst
+forudsig_DI_2026K3 <- predict(
+  model_DI,
+  newdata = ny_DI
+)
+
+forudsig_DI_2026K3
+
+################################# NYE SVAR
+summary(model_DI)
+summary(model_DST)
+forudsig_DI_2026K3
+forudsig_DST_2026K3
+
+###GRAF
+
+#samler de to forudsigelser i et lille datasæt
+prognose_2026K3 <- data.frame(
+  Model = c(
+    "DI's Forbrugertillidsindikator",
+    "Danmarks Statistiks Forbrugertillidsindikator"
+  ),
+  Realvaekst = c(
+    as.numeric(forudsig_DI_2026K3),
+    as.numeric(forudsig_DST_2026K3)
+  )
+)
+
+#farver
+farve_realvaekst <- "#1595D3"
+farve_grid <- "#D9D9D9"
+
+#laver grafen
+ggplot(
+  prognose_2026K3,
+  aes(x = Model, y = Realvaekst)
+) +
+  
+  #slanke blå søjler
+  geom_col(
+    fill = farve_realvaekst,
+    width = 0.38
+  ) +
+  
+  #nul-linje
+  geom_hline(
+    yintercept = 0,
+    colour = "#666666",
+    linewidth = 0.8
+  ) +
+  
+  #større procenttal på søjlerne
+  geom_text(
+    aes(
+      label = paste0(
+        format(
+          round(Realvaekst, 2),
+          nsmall = 2,
+          decimal.mark = ","
+        ),
+        " %"
+      )
+    ),
+    vjust = 1.4,
+    colour = "white",
+    size = 6,
+    fontface = "bold"
+  ) +
+  
+  #giver lidt ekstra luft i grafen
+  scale_y_continuous(
+    limits = c(-0.9, 0.15),
+    breaks = seq(-0.8, 0, 0.2),
+    labels = function(x) paste0(
+      format(
+        x,
+        decimal.mark = ",",
+        nsmall = 1
+      ),
+      " %"
+    )
+  ) +
+  
+  #titel, undertitel og kilde
+  labs(
+    title = "Forudsagt årlig realvækst i privatforbruget, 3. kvartal 2026",
+    subtitle = "Baseret på DI's Forbrugertillidsindikator og Danmarks Statistiks Forbrugertillidsindikator",
+    x = NULL,
+    y = "Årlig realvækst",
+    caption = paste0(
+      "Kilde: Danmarks Statistik, Statistikbanken, NKN1: P.31 Privatforbrug,\n",
+      "sæsonkorrigeret, 2020-priser, kædede værdier, mia. kr.\n",
+      "DI-FTI er beregnet som gennemsnittet af fire udvalgte spørgsmål fra forbrugerforventningsundersøgelsen.\n",
+      "DST-FTI er Danmarks Statistiks Forbrugertillidsindikator. Egne beregninger og databehandling i R/RStudio."
+    )
+  ) +
+  
+  #rent tema
+  theme_minimal() +
+  
+  theme(
+    plot.title = element_text(
+      face = "bold",
+      size = 17,
+      colour = "#222222",
+      margin = margin(b = 7)
+    ),
+    
+    plot.subtitle = element_text(
+      size = 12,
+      colour = "#444444",
+      margin = margin(b = 18)
+    ),
+    
+    axis.title.y = element_text(
+      size = 12,
+      colour = "#444444",
+      margin = margin(r = 10)
+    ),
+    
+    axis.text.y = element_text(
+      size = 11,
+      colour = "#444444"
+    ),
+    
+    axis.text.x = element_text(
+      size = 11,
+      colour = "#333333",
+      face = "bold",
+      margin = margin(t = 8)
+    ),
+    
+    panel.grid.major.y = element_line(
+      colour = farve_grid,
+      linewidth = 0.5
+    ),
+    
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    
+    plot.caption = element_text(
+      size = 9,
+      hjust = 0,
+      colour = "#555555",
+      lineheight = 1.15,
+      margin = margin(t = 15)
+    ),
+    
+    plot.margin = margin(
+      t = 20,
+      r = 25,
+      b = 25,
+      l = 20
+    )
+  )

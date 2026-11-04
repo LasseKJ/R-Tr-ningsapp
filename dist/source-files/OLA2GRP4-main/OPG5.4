@@ -1,0 +1,38 @@
+
+# -------------
+# Opgave 5.4
+#--------------
+effekt_corona <- realvaekst |>
+  filter(time >= "2020-Q1", time <= "2026-Q2") |>
+  group_by(geo) |>
+  summarise(
+    gennemsnit_pct = mean(realvaekst_pct),
+  ) |>
+  mutate(land = geo) |>
+  select(land, gennemsnit_pct) |>
+  arrange(gennemsnit_pct)
+
+print(effekt_corona)
+
+?ggplot
+
+ggplot(effekt_corona, aes(x=lande, y= gennemsnit_pct)) + geom_col(
+  fill="#2563EB"
+)+
+  geom_text(
+    aes(label = paste0(round(gennemsnit_pct, 1), " %")),
+    vjust = -0.5
+  ) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0.05, 0.15))
+  ) +
+  labs(
+    x = "Land",
+    y = "Gennemsnitlig realvækst pct",
+    title = "Danmark har haft den laveste gennemsnitlige realvækst i 
+    privatforbruget siden coronakrisens begyndelse",
+    subtitle = "Realvæksten i perioden 2020-2026",
+    caption = "gennemsnitlig realvækst i pct. siden coronakrisens begyndelse i 2020
+    Kilde: egen beregnet realvæskt i pct ud fra eurostat namq_10"
+  )
+

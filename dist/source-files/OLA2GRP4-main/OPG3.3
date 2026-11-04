@@ -1,0 +1,36 @@
+# --------------------------------------------------
+# OPGAVE 3.3 - RSS OG TSS
+# --------------------------------------------------
+
+# RSS: Summen af de kvadrerede residualer
+RSS_DI <- sum(resultater_DI$Residual^2)
+
+RSS_DST <- sum(resultater_DST$Residual^2)
+
+
+# Beregn gennemsnittet af den faktiske realvækst
+gennemsnit_DI <- mean(resultater_DI$Realvaekst)
+
+gennemsnit_DST <- mean(resultater_DST$Realvaekst)
+
+
+# TSS: Summen af de kvadrerede afvigelser fra gennemsnittet
+TSS_DI <- sum(
+  (resultater_DI$Realvaekst - gennemsnit_DI)^2
+)
+
+TSS_DST <- sum(
+  (resultater_DST$Realvaekst - gennemsnit_DST)^2
+)
+
+
+# Saml resultaterne i en tabel
+RSS_TSS <- data.frame(
+  Model = c("DI", "DST"),
+  RSS = c(RSS_DI, RSS_DST),
+  TSS = c(TSS_DI, TSS_DST)
+)
+
+View(RSS_TSS)
+print(RSS_TSS)
+

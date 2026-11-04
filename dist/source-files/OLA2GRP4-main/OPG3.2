@@ -1,0 +1,54 @@
+#Opgave 3.2
+
+# Beregn residualer for de to modeller, og indsæt i tabel fra 3.1
+resultater_DI$Residual <-
+  resultater_DI$Realvaekst - resultater_DI$Forudsagt
+
+resultater_DST$Residual <-
+  resultater_DST$Realvaekst - resultater_DST$Forudsagt
+
+# Vis kvartaler, faktiske værdier, forudsigelser og residualer
+View(resultater_DI)
+View(resultater_DST)
+
+# Saml resultaterne til graferne
+residualdata <- rbind(
+  data.frame(
+    Tidsinterval = resultater_DI$Tidsinterval,
+    Model = "DI's forbrugertillidsindikator",
+    Forudsagt = resultater_DI$Forudsagt,
+    Residual = resultater_DI$Residual
+  ),
+  data.frame(
+    Tidsinterval = resultater_DST$Tidsinterval,
+    Model = "DST's forbrugertillidsindikator",
+    Forudsagt = resultater_DST$Forudsagt,
+    Residual = resultater_DST$Residual
+  )
+)
+
+#Lav GG Plot
+
+ggplot(
+  residualdata,
+  aes(x = Forudsagt, y = Residual)
+) +
+  geom_point(
+    colour = "#1595D3",
+    size = 2,
+    alpha = 0.7
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed",
+    colour = "#666666"
+  ) +
+  facet_wrap(~ Model, ncol = 2) +
+  labs(
+    title = "Residualer for DI- og DST-modellen",
+    subtitle = "Hvert punkt repræsenterer ét kvartal",
+    x = "Forudsagt årlig realvækst (%)",
+    y = "Residual (procentpoint)",
+    caption = "Kilde: Egne beregninger på modellerne fra opgave 2."
+  ) +
+  theme_minimal()

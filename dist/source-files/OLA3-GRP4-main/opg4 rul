@@ -1,0 +1,47 @@
+# --------------------------------------------------
+# R² i rullende vinduer på 15 år
+# --------------------------------------------------
+data_rul <- samlet[order(samlet$Tidsinterval), ]
+
+r2_rul <- matrix(
+  NA,
+  nrow = nrow(data_rul) - 59,
+  ncol = ncol(z)
+)
+
+for (rul in 1:nrow(r2_rul)) {
+  periode <- data_rul[rul:(rul + 59), ]
+  
+  for (v in 1:ncol(z)) {
+    model <- lm(periode$Realvaekst ~ periode[[v + 1]])
+    r2_rul[rul, v] <- summary(model)$r.squared
+  }
+}
+
+colnames(r2_rul) <- paste0("V", 1:ncol(z))
+
+r2_stabilitet <- rbind(
+  r2_rul,
+  Gennemsnit = colMeans(r2_rul),
+  Standardafvigelse = apply(r2_rul, 2, sd)
+)
+
+stabilitet_resultater <- data.frame(
+  Indikator = colnames(r2_stabilitet),
+  R2 = r2_stabilitet["Gennemsnit", ],
+  Spoergsmaal = x,
+  Standardafvigelse = r2_stabilitet["Standardafvigelse", ]
+)
+
+stabilitet_resultater <- stabilitet_resultater[
+  order(stabilitet_resultater$R2, decreasing = TRUE),
+]
+
+top10st <- head(stabilitet_resultater, 10)
+
+View(top10st)
+
+top100st <- head(stabilitet_resultater, 100)
+
+View(top100st)
+sort(table(unlist(strsplit(top100st$Spoergsmaal, "+", fixed = TRUE))), decreasing = TRUE)

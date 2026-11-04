@@ -1,0 +1,56 @@
+# -------------
+# Opgave 5.1
+#--------------
+
+library(restatapi)
+library(dplyr)
+library(tidyr)
+
+# 1. Hent sæson- og kalenderkorrigeret realt husholdningsforbrug
+forbrug <- get_eurostat_data(
+  id = "namq_10_fcs",
+  filters = list(
+    geo = c("DK", "BE", "NL", "SE", "AT", "DE", "FR", "IT", "ES"),
+    na_item = "P31_S14",
+    unit = "CLV20_MNAC",
+    s_adj = "SCA"
+  ),
+  select_freq = "Q",
+  date_filter = "1999-01-01:2026-06-30",
+  name = FALSE,
+  stringsAsFactors = FALSE
+)
+
+# 2. Lav en tabel med alle kvartaler for hvert land
+
+kvartaler <- sort(unique(as.character(forbrug$time)))
+
+forbrug_komplet <- forbrug |>
+  select(geo, time, values) |>
+  mutate(time = as.character(time)) |>
+  complete(
+    geo = c("DK", "BE", "NL", "SE", "AT", "DE", "FR", "IT", "ES"),
+    time = kvartaler
+  )
+
+# 3. Beregn væksten i forhold til samme kvartal året før
+realvaekst <- forbrug_komplet |>
+  arrange(geo, time) |>
+  group_by(geo) |>
+  mutate(
+    realvaekst_pct = 100 * (values / lag(values, 4) - 1)
+  ) |>
+  filter(time >= "2000-Q1", time <= "2026-Q2")
+
+# 4. Vis resultatet med én kolonne pr. land
+realvaekst_tabel <- realvaekst |>
+  select(time, geo, realvaekst_pct) |>
+  pivot_wider(
+    names_from = geo,
+    values_from = realvaekst_pct
+  ) |>
+  arrange(time) |>
+  select(time, DK, BE, NL, SE, AT, DE, FR, IT, ES) |>
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
+
+View(realvaekst_tabel)

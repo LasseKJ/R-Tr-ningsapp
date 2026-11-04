@@ -1,0 +1,16 @@
+#Opgave 1.2
+
+#Opret en kategori variable
+
+library("dplyr")
+
+BYdataKat <- BYdataT %>%
+  mutate(
+    bykategori = case_when(
+      value >= 250000 ~ "Storby",
+      value >= 20000  ~ "Større by",
+      value >= 5000   ~ "Mellemstor by",
+      value > 200   ~ "Mindre by",
+      value <= 200    ~ "Landsby / landdistrikt"
+    )
+  )

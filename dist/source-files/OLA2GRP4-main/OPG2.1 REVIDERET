@@ -1,0 +1,334 @@
+library(dkstat)
+library(tidyr)
+library(ggplot2)
+
+####privatforbrug
+# Hent metadata og find tabellens variabelnavne
+privatforbrug_meta <- dst_meta("NKN1", lang = "da")
+variable <- privatforbrug_meta$variables
+ids <- variable$id[match(
+  c("transaktion", "prisenhed", "sæsonkorrigering", "tid"),
+  tolower(trimws(variable$text))
+)]
+stopifnot(!anyNA(ids))
+
+# Hent sæsonkorrigeret privatforbrug i kædede 2020-priser
+privatforbrug_filters <- setNames(
+  list(
+    "P.31 Privatforbrug",
+    "2020-priser, kædede værdier, (mia. kr.)",
+    "Sæsonkorrigeret",
+    "*"
+  ),
+  ids
+)
+
+privatforbrug_raw <- dst_get_data(
+  table = "NKN1",
+  query = privatforbrug_filters,
+  meta_data = privatforbrug_meta,
+  lang = "da",
+  parse_dst_tid = FALSE
+)
+
+# Vælg perioden og sortér kvartalerne
+privatforbrug_raw <- privatforbrug_raw[
+  privatforbrug_raw$TID >= "1999K1",
+]
+
+privatforbrug_raw <- privatforbrug_raw[order(privatforbrug_raw$TID), ]
+
+#nyt rent dataframe
+privatforbrug <- data.frame(
+  Tidsinterval = as.character(privatforbrug_raw$TID),
+  Privatforbrug = privatforbrug_raw$value
+)
+
+#kontrollér, at der er én observation pr. kvartal uden huller
+kvartalsnummer <- as.integer(substr(privatforbrug$Tidsinterval, 1, 4)) * 4 +
+  as.integer(substr(privatforbrug$Tidsinterval, 6, 6))
+stopifnot(nrow(privatforbrug) > 4, all(diff(kvartalsnummer) == 1))
+
+#ålig realvækst: samme kvartal sammenlignet med året før
+privatforbrug$Realvaekst <- c(
+  rep(NA, 4),
+  (
+    privatforbrug$Privatforbrug[5:nrow(privatforbrug)] /
+      privatforbrug$Privatforbrug[1:(nrow(privatforbrug) - 4)] - 1
+  ) * 100
+)
+
+########forbrugertillid
+
+meta <- dst_meta("FORV1", lang = "da")
+navne <- meta$values$INDIKATOR$text
+
+
+#præcise navne i metadata, første seks = FTI og fem spg. sidste serie er DI spg4. der må godt være mellemrum
+soegenavne <- tolower(navne)
+soegenavne <- gsub("[[:space:]\u00a0]+", " ", soegenavne, perl = TRUE)
+
+moenstre <- c(
+  "forbrugertillidsindikator",
+  "familiens.*i dag.*siden",
+  "familiens.* om .*sammenlignet",
+  "danmarks.*i dag.*siden",
+  "danmarks.* om .*sammenlignet",
+  "anskaffelse.*fordelagtigt",
+  "anskaffelse.*12"
+)
+
+spoergsmaal <- character(7)
+for (i in 1:7) {
+  fundet <- navne[grepl(moenstre[i], soegenavne)]
+  
+  if (length(fundet) != 1) {
+    stop(paste0(
+      "Spørgsmål ", i, " gav ", length(fundet), " match.\n",
+      "Indikatornavne fra DST:\n", paste(navne, collapse = "\n")
+    ))
+  }
+  
+  spoergsmaal[i] <- fundet
+}
+
+forventninger <- dst_get_data(
+  table = "FORV1",
+  query = list(INDIKATOR = spoergsmaal, Tid = "*"),
+  meta_data = meta,
+  lang = "da",
+  parse_dst_tid = FALSE
+)
+
+forventninger <- forventninger[
+  forventninger$TID >= "1999M01",
+]
+#fjern eventuelle koder foran indikatornavnene
+for (i in 1:7) {
+  valgt <- endsWith(as.character(forventninger$INDIKATOR), spoergsmaal[i])
+  forventninger$INDIKATOR[valgt] <- spoergsmaal[i]
+}
+stopifnot(
+  all(forventninger$INDIKATOR %in% spoergsmaal),
+  !anyDuplicated(forventninger[c("TID", "INDIKATOR")])
+)
+
+#en række pr. måned og spørgsmålene som kolonner
+forventninger <- pivot_wider(
+  forventninger,
+  id_cols = TID,
+  names_from = INDIKATOR,
+  values_from = value
+)
+forventninger <- as.data.frame(forventninger)
+forventninger <- forventninger[
+  order(forventninger$TID),
+  c("TID", spoergsmaal)
+]
+
+#DST: seks serier frem til september 2026
+ftillid <- forventninger[, c("TID", spoergsmaal[1:6])]
+
+#de fire spørgsmål der bruges til di-fti
+DIFTI_raw <- forventninger[
+  ,
+  c("TID", spoergsmaal[c(2, 4, 6, 7)])
+]
+
+DIFTI <- DIFTI_raw
+
+###########FORBRUGERTILLID FRA MÅNEDER TIL KVARTALER
+
+#find kvartalet for hver måned
+maaned <- as.integer(substr(forventninger$TID, 6, 7))
+tidsinterval <- paste0(
+  substr(forventninger$TID, 1, 4),
+  "K",
+  (maaned - 1) %/% 3 + 1
+)
+kvartaler <- sort(unique(tidsinterval))
+
+#én række pr. kvartal og én kolonne pr. indikator
+forventninger_kvt <- data.frame(Tidsinterval = kvartaler)
+for (j in 1:7) {
+  forventninger_kvt[[spoergsmaal[j]]] <- NA_real_
+}
+
+#gennemsnit af de tre måneder i hvert kvartal
+for (i in seq_along(kvartaler)) {
+  raekker <- which(tidsinterval == kvartaler[i])
+  
+  for (j in 1:7) {
+    vaerdier <- forventninger[[spoergsmaal[j]]][raekker]
+    
+    #behold NA, hvis kvartalet mangler gyldige månedstal
+    if (length(vaerdier) == 3 && all(is.finite(vaerdier))) {
+      forventninger_kvt[i, j + 1] <- mean(vaerdier)
+    }
+  }
+}
+
+ftillid_kvt <- forventninger_kvt[, c("Tidsinterval", spoergsmaal[1:6])]
+
+#DST's offentliggjorte indikator, som kvartalsgennemsnit
+DST_FTI <- data.frame(
+  Tidsinterval = ftillid_kvt$Tidsinterval,
+  DST_FTI = ftillid_kvt[[spoergsmaal[1]]]
+)
+
+#di's fire spørgsmål pr. kvartal
+DIFTI_kvt <- forventninger_kvt[
+  ,
+  c("Tidsinterval", spoergsmaal[c(2, 4, 6, 7)])
+]
+names(DIFTI_kvt) <- c(
+  "Tidsinterval", "fm_nu", "dk_nu",
+  "forbrugsgoder_nu", "forbrugsgoder_frem"
+)
+
+#lige vægt til de fire spørgsmål
+DIFTI_kvt$DI_FTI <- (
+  DIFTI_kvt$fm_nu +
+    DIFTI_kvt$dk_nu +
+    DIFTI_kvt$forbrugsgoder_nu +
+    DIFTI_kvt$forbrugsgoder_frem
+) / 4
+
+###########sammenkobling og simple regressioner
+
+forbrug_DI <- merge(DIFTI_kvt, privatforbrug, by = "Tidsinterval", sort = TRUE)
+forbrug_DST <- merge(DST_FTI, privatforbrug, by = "Tidsinterval", sort = TRUE)
+
+#fjern observationer uden gyldige værdier
+forbrug_DI <- forbrug_DI[
+  is.finite(forbrug_DI$Realvaekst) & is.finite(forbrug_DI$DI_FTI),
+]
+forbrug_DST <- forbrug_DST[
+  is.finite(forbrug_DST$Realvaekst) & is.finite(forbrug_DST$DST_FTI),
+]
+stopifnot(nrow(forbrug_DI) > 2, nrow(forbrug_DST) > 2)
+
+model_DI <- lm(Realvaekst ~ DI_FTI, data = forbrug_DI)
+model_DST <- lm(Realvaekst ~ DST_FTI, data = forbrug_DST)
+print(summary(model_DI))
+print(summary(model_DST))
+
+
+###################enshed til grafer
+
+farve_realvaekst <- "#1595D3"
+farve_fti <- "#666666"
+farve_grid <- "#D9D9D9"
+skalering <- 25 / 8
+
+
+#graf DI-fti
+
+
+graf_DI <- ggplot(forbrug_DI, aes(x = Tidsinterval)) +
+  
+  #realvækst som blå søjler
+  geom_col(
+    aes(y = Realvaekst * skalering),
+    fill = farve_realvaekst,
+    width = 0.8
+  ) +
+  
+  #forbrugertillid som grå linje
+  geom_line(
+    aes(y = DI_FTI, group = 1),
+    colour = farve_fti,
+    linewidth = 1
+  ) +
+  
+  #venstre og højre y-akse
+  scale_y_continuous(
+    name = "Nettotal",
+    sec.axis = sec_axis(~ . / skalering, name = "Pct.")
+  ) +
+  
+  #årstal ved første kvartal
+  scale_x_discrete(
+    breaks = forbrug_DI$Tidsinterval[grepl("K1$", forbrug_DI$Tidsinterval)],
+    labels = substr(
+      forbrug_DI$Tidsinterval[grepl("K1$", forbrug_DI$Tidsinterval)], 1, 4
+    )
+  ) +
+  
+  labs(
+    title = "DI-forbrugertillid og privatforbrugets realvækst",
+    subtitle = "Grå linje: DI-FTI · Blå søjler: årlig realvækst",
+    x = NULL,
+    caption = "Kilde: Danmarks Statistik. Egne beregninger.\nDI-FTI: simpelt gennemsnit af de fire udvalgte spørgsmål."
+  ) +
+  
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 10),
+    axis.title = element_text(size = 10),
+    axis.text = element_text(size = 8),
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+    panel.grid.major.y = element_line(colour = farve_grid, linewidth = 0.5),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.caption = element_text(size = 8, hjust = 0)
+  )
+
+print(graf_DI)
+
+
+#graf DST-FTI
+
+
+graf_DST <- ggplot(forbrug_DST, aes(x = Tidsinterval)) +
+  
+  #realvækst som blå søjler
+  geom_col(
+    aes(y = Realvaekst * skalering),
+    fill = farve_realvaekst,
+    width = 0.8
+  ) +
+  
+  #forbrugertillid som grå linje
+  geom_line(
+    aes(y = DST_FTI, group = 1),
+    colour = farve_fti,
+    linewidth = 1
+  ) +
+  
+  #venstre og højre y-akse
+  scale_y_continuous(
+    name = "Nettotal",
+    sec.axis = sec_axis(~ . / skalering, name = "Pct.")
+  ) +
+  
+  #årstal ved første kvartal
+  scale_x_discrete(
+    breaks = forbrug_DST$Tidsinterval[grepl("K1$", forbrug_DST$Tidsinterval)],
+    labels = substr(
+      forbrug_DST$Tidsinterval[grepl("K1$", forbrug_DST$Tidsinterval)], 1, 4
+    )
+  ) +
+  
+  labs(
+    title = "DST-forbrugertillid og privatforbrugets realvækst",
+    subtitle = "Grå linje: DST-FTI · Blå søjler: årlig realvækst",
+    x = NULL,
+    caption = "Kilde: Danmarks Statistik. Egne beregninger.\nDST-FTI: kvartalsgennemsnit af den offentliggjorte indikator."
+  ) +
+  
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 10),
+    axis.title = element_text(size = 10),
+    axis.text = element_text(size = 8),
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+    panel.grid.major.y = element_line(colour = farve_grid, linewidth = 0.5),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.caption = element_text(size = 8, hjust = 0)
+  )
+
+print(graf_DST)

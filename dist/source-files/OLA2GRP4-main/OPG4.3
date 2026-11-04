@@ -1,0 +1,125 @@
+# --------------------------------------------------
+#data prep
+# --------------------------------------------------
+library(dkstat)
+
+# --------------------------------------------------
+# Henter metadata
+# --------------------------------------------------
+forbrug_meta <- dst_meta(table = "NKHC021", lang = "da")
+names(forbrug_meta$values) <- toupper(names(forbrug_meta$values))
+
+# --------------------------------------------------
+# Vælg formål og tidspunkter
+# --------------------------------------------------
+forbrug_filter <- setNames(
+  rep(list("*"), length(forbrug_meta$values)),
+  names(forbrug_meta$values)
+)
+
+# Finder filterteksterne ud fra koderne i metadata
+pris <- forbrug_meta$values[["PRISENHED"]]
+saeson <- forbrug_meta$values[["SÆSON"]]
+
+pris_tekst <- pris$text[pris$id == "LKV"]
+saeson_tekst <- saeson$text[saeson$id == "Y"]
+
+if (length(pris_tekst) != 1L || length(saeson_tekst) != 1L) {
+  stop("Kunne ikke finde priskoden LKV og sæsonkoden Y i metadata.")
+}
+
+forbrug_filter[["PRISENHED"]] <- pris_tekst
+forbrug_filter[["SÆSON"]] <- saeson_tekst
+
+# Henter data og beholder kvartaler som tekst
+forbrug <- dst_get_data(
+  table = "NKHC021",
+  query = forbrug_filter,
+  lang = "da",
+  parse_dst_tid = FALSE
+)
+
+# --------------------------------------------------
+# Behold 2019K1 og frem
+# --------------------------------------------------
+forbrug <- forbrug[!is.na(forbrug$TID) & forbrug$TID >= "2019K1", ]
+
+# --------------------------------------------------
+# Find kolonnen med forbrugskategorier
+# --------------------------------------------------
+kategori <- setdiff(
+  names(forbrug),
+  c("TID", "PRISENHED", "SÆSON", "value")
+)
+
+if (length(kategori) != 1L) {
+  stop("Kunne ikke identificere én entydig kolonne med forbrugskategorier.")
+}
+
+# --------------------------------------------------
+# Hver kategori bliver en kolonne, og hvert kvartal bliver en række
+# --------------------------------------------------
+forbrug_bred <- tidyr::pivot_wider(
+  forbrug,
+  id_cols = TID,
+  names_from = tidyselect::all_of(kategori),
+  values_from = value
+)
+
+# --------------------------------------------------
+# Sorterer efter kvartal og viser resultatet
+# --------------------------------------------------
+forbrug_bred <- forbrug_bred[order(forbrug_bred$TID), ]
+View(forbrug_bred)
+
+# --------------------------------------------------
+# Vælg de fire kvartaler i 2025
+# --------------------------------------------------
+forbrug_2025 <- forbrug_bred[
+  forbrug_bred$TID >= "2025K1" &
+    forbrug_bred$TID <= "2025K4",
+]
+
+View(forbrug_2025)
+
+# --------------------------------------------------
+# Find gennemsnittet for hver af de 15 forbrugsgrupper
+# --------------------------------------------------
+gns_2025 <- colMeans(
+  forbrug_2025[, -1],
+  na.rm = TRUE
+)
+
+# --------------------------------------------------
+# Sorterer fra højeste til laveste forbrug
+# --------------------------------------------------
+gns_2025 <- sort(
+  gns_2025,
+  decreasing = TRUE
+)
+
+gns_2025
+
+# --------------------------------------------------
+# Finder 2020K1
+# --------------------------------------------------
+forbrug_2020K1 <- forbrug_bred[
+  forbrug_bred$TID == "2020K1",
+]
+
+# --------------------------------------------------
+# Finder 2026K1
+# --------------------------------------------------
+forbrug_2026K1 <- forbrug_bred[
+  forbrug_bred$TID == "2026K1",
+]
+
+# --------------------------------------------------
+# Finder stigningen
+# --------------------------------------------------
+stigning <- forbrug_2026K1[, -1] - forbrug_2020K1[, -1]
+
+# --------------------------------------------------
+# Sorterer så største stigning står øverst
+# --------------------------------------------------
+sort(unlist(stigning), decreasing = TRUE)

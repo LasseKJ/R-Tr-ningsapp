@@ -1,0 +1,48 @@
+# ---- ----------------------------------------------
+# OPGAVE 3.1 – MODELLERNES FORUDSIGELSER
+# --------------------------------------------------
+
+# DI-modellen
+resultater_DI <- forbrug_DI |>
+  select(Tidsinterval, Realvaekst, DI_FTI) |>
+  mutate(
+    Forudsagt = coef(model_DI)[["(Intercept)"]] +
+      coef(model_DI)[["DI_FTI"]] * DI_FTI
+  )
+
+# DST-modellen
+resultater_DST <- forbrug_DST |>
+  select(Tidsinterval, Realvaekst, DST_FTI) |>
+  mutate(
+    Forudsagt = coef(model_DST)[["(Intercept)"]] +
+      coef(model_DST)[["DST_FTI"]] * DST_FTI
+  )
+
+# Saml begge modellers forudsigelser for alle fælles kvartaler
+SamletResultat <- resultater_DI |>
+  select(Tidsinterval, Realvaekst, Forudsagt_DI = Forudsagt) |>
+  inner_join(
+    resultater_DST |>
+      select(Tidsinterval, Forudsagt_DST = Forudsagt),
+    by = "Tidsinterval"
+  ) |>
+  arrange(Tidsinterval)
+
+# Udvælg kvartaler til tabellen i opgaven
+# Afrund kun præsentationstabellen, så beregningerne bevarer præcisionen
+UdvalgteResultater <- SamletResultat |>
+  filter(
+    Tidsinterval %in% c(
+      "2000K1", "2000K2",
+      "2018K1", "2018K2",
+      "2026K1", "2026K2"
+    )
+  ) |>
+  transmute(
+    Kvartal = Tidsinterval,
+    `Faktisk realvækst (%)` = round(Realvaekst, 2),
+    `Forudsagt – DI (%)` = round(Forudsagt_DI, 2),
+    `Forudsagt – DST (%)` = round(Forudsagt_DST, 2)
+  )
+
+View(UdvalgteResultater)

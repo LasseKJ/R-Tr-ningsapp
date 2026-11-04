@@ -1,0 +1,50 @@
+# Opgave 1.3
+
+library(dplyr)
+
+# Indlæs boligdata fra OLA 1
+newhomes <- read.csv("https://gist.githubusercontent.com/ayki1000/03cdebe8d2d50a16ef6c2fcd4802c6fd/raw/a2f8319a3277cfb822af5eb0962b8e486818866d/boligsiden.csv")
+
+# Fjern rækker med manglende værdier
+newhomesny <- newhomes %>% filter(complete.cases(.))
+
+# RENS Lav kolonner med tal om til numeriske værdier
+newhomesny$pris <- as.numeric(gsub("[^0-9]", "", newhomesny$pris))
+newhomesny$størrelse <- as.numeric(gsub("[^0-9]", "", newhomesny$størrelse))
+newhomesny$kvmpris <- as.numeric(gsub("[^0-9]", "", newhomesny$kvmpris))
+newhomesny$mdudg <- as.numeric(gsub("[^0-9]", "", newhomesny$mdudg))
+newhomesny$grund <- as.numeric(gsub("[^0-9]", "", newhomesny$grund))
+newhomesny$liggetid <- as.numeric(gsub("[^0-9]", "", newhomesny$liggetid))
+
+# Omdøb BYER til by, inden kolonnen bruges
+names(BYdataKat)[names(BYdataKat) == "BYER"] <- "by"
+
+# Omdøb Value til Indbyggertal
+
+names(BYdataKat)[names(BYdataKat) == "value"] <- "Indbyggertal"
+
+# Fjern tal, bindestreger og mellemrum i starten
+BYdataKat$by <- sub("^[0-9 -]+", "", BYdataKat$by)
+
+# Fjern parentesen og alt efter den
+BYdataKat$by <- sub("\\(.*", "", BYdataKat$by)
+
+# brug små bogstaver i begge datasæt, så merge virker.
+BYdataKat$by <- tolower(BYdataKat$by)
+newhomesny$by <- tolower(newhomesny$by)
+
+# Kombiner dobbelt byer til en
+
+BYdataSamlet <- aggregate(
+  Indbyggertal ~ by + bykategori,
+  data = BYdataKat,
+  FUN = sum,
+  all.x = TRUE
+)
+
+#Merge
+
+samlet <- merge(BYdataSamlet, newhomesny,by = "by")
+
+# Se resultatet
+View(samlet)

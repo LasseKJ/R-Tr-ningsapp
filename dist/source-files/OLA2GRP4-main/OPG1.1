@@ -1,0 +1,30 @@
+#Opgave 1.1
+
+library(dkstat) 
+
+BY_meta <- dst_meta(table = "BY3", lang = "da")
+
+BY_meta_filters <- list(
+  BYER = "*",
+  FOLKARTAET = "Folketal",
+  Tid = "2026"
+) 
+
+#Clean Data
+
+BYdata <- dst_get_data(table = "BY3", query = BY_meta_filters, lang = "da")
+
+BYdataU <- BYdata[!grepl("Uden fast bopæl", BYdata$BYER), ]
+
+BYdataT <- BYdataU[BYdataU$value > 100,]
+
+View(BYdataT)
+
+#Fjernede data 
+
+BYdataM <- BYdata[grepl("Uden fast bopæl", BYdata$BYER), ]
+
+BYdata0 <- BYdata[(BYdata$value == 0),]
+
+View(BYdataM)
+View(BYdata0)
