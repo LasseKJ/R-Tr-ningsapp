@@ -1,6 +1,6 @@
 library(readxl)
 library(ggplot2)
-Forbrugerindikator <- read.csv("C:/Users/Lasse/Downloads/20269119158657943046FORV133321389736.csv", sep = ";")
+Forbrugerindikator <- read.csv("20269119158657943046FORV133321389736.csv", sep = ";")
 
 Forbrugerindikator$tid <- rownames(Forbrugerindikator)
 Forbrugerindikator$indikator <- Forbrugerindikator[[1]]
@@ -14,7 +14,7 @@ qplot(Forbrugerindikator$tid,
       Forbrugerindikator$Forbrugerforventninger..nettotal..efter.tid.og.indikator,
       geom = "col")
 
-household_expectations <- read.csv("C:/Users/Lasse/Downloads/Sammenlignet2.csv", sep = ";", header = FALSE)
+household_expectations <- read.csv("Sammenlignet2.csv", sep = ";", header = FALSE)
 
 print(household_expectations)
 

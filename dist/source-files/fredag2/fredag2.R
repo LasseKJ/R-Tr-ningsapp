@@ -2,7 +2,7 @@ library(ggplot2)
 
 #Læs CSV og vis dataen i et sheet
 
-ALT <- read.csv("C:/Users/Lasse/Downloads/ALT.csv", 
+ALT <- read.csv("ALT.csv", 
                 sep = ";", 
                 header = TRUE, 
                 skip = 1, 

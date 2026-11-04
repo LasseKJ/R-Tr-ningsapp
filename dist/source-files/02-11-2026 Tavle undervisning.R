@@ -74,7 +74,7 @@ currwithop=currentDF |> left_join(tabsdf)
 
 
 # get the airports
-airports=read.csv("/Users/thor/Downloads/airports.csv")
+airports=read.csv("airports.csv")
 colnames(airports)
 
 # get iban countries 

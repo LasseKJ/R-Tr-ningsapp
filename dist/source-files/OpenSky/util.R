@@ -4,7 +4,7 @@ library(httr)
 
 clientId=Sys.getenv("OPENSKY_CLIENTID")
 clientSecret=Sys.getenv("OPENSKY_CLIENTSECRET")
-user_name <- "lassekj12@gmail.com"
+user_name <- Sys.getenv("OPENSKY_USERNAME")
 
 # Request an access token
 
