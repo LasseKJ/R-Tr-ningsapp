@@ -17,15 +17,24 @@ export class ProgressSync {
   this.key=`r-lab-account-${userId}`;this.revision=0;this.dirty=false;this.counter=0;this.closed=false;this.conflict=false;
  }
  cache(){this.storage.setItem(this.key,JSON.stringify({progress:this.progress,revision:this.revision,dirty:this.dirty}));}
- async read(){const {data,error}=await this.client.from('rlab_progress').select('progress,revision').eq('user_id',this.userId).maybeSingle();if(error)throw error;return data;}
+ async read(){
+  let timer;
+  try{
+   const query=this.client.from('rlab_progress').select('progress,revision').eq('user_id',this.userId).maybeSingle();
+   const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Profilen svarer ikke.')),8000);});
+   const {data,error}=await Promise.race([query,timeout]);
+   if(error)throw error;
+   return data;
+  }finally{clearTimeout(timer);}
+ }
  async start(){
   let cached;try{cached=JSON.parse(this.storage.getItem(this.key));if(cached)cached.progress=validateProgress(cached.progress);}catch{cached=null;}
   if(cached){this.progress=cached.progress;this.revision=cached.revision;this.dirty=!!cached.dirty;this.onProgress(this.progress);}
   try{
    const remote=await this.read();if(this.closed)return;
-   if(this.dirty){if(this.revision!==(remote?.revision||0)){this.conflict=true;this.onState('conflict');return;}await this.flush();}
+   if(this.dirty){if(this.revision!==(remote?.revision||0)){this.conflict=true;this.onState('conflict');return;}this.onState('pending');void this.flush();}
    else{this.progress=remote?validateProgress(remote.progress):emptyProgress();this.revision=remote?.revision||0;this.cache();this.onProgress(this.progress);this.onState('saved');}
-  }catch{if(!this.progress)this.progress=emptyProgress();this.onState('offline');}
+  }catch{if(this.closed)return;if(!this.progress)this.progress=emptyProgress();this.onState('offline');}
  }
  save(progress){if(this.closed)return;this.progress=structuredClone(progress);this.counter++;this.dirty=true;this.cache();if(!this.conflict)this.onState('pending');clearTimeout(this.timer);this.timer=setTimeout(()=>this.flush(),700);}
  async flush(){
