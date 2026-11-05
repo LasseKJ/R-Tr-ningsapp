@@ -2,6 +2,11 @@ import {KEY,emptyProgress,loadProgress} from './progress.js';
 import {ProgressSync,mergeGuest} from './sync.js';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const labels={guest:'Gemt på denne enhed',loading:'Forbinder…',saved:'Gemt online',pending:'Afventer synkronisering',saving:'Gemmer online…',offline:'Kun lokalt · prøv igen',conflict:'Ændringer på en anden enhed',unavailable:'Online profil utilgængelig'};
+async function withTimeout(request){
+ let timer;
+ try{return await Promise.race([request,new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Profilforbindelsen svarer ikke.')),8000);})]);}
+ finally{clearTimeout(timer);}
+}
 export class Account {
  constructor({storage,getProgress,setProgress,render,toast,beforeSwitch}){Object.assign(this,{storage,getProgress,setProgress,render,toast,beforeSwitch});this.status='loading';this.mode='login';}
  syncStatusView(){return `<p data-sync-status role="status">${escape(labels[this.status])}</p>`;}
@@ -9,11 +14,11 @@ export class Account {
  state(status){this.status=status;document.querySelectorAll('[data-sync-status]').forEach(el=>el.textContent=labels[status]);const conflict=document.querySelector('#sync-conflict');if(conflict)conflict.hidden=status!=='conflict';}
  async init(){
   try{
-   const response=await fetch('/api/config');if(!response.ok)throw Error();const config=await response.json();
-   const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.80.0');
+   const response=await fetch('/api/config',{signal:AbortSignal.timeout(8000)});if(!response.ok)throw Error();const config=await response.json();
+   const {createClient}=await withTimeout(import('https://esm.sh/@supabase/supabase-js@2.80.0'));
    this.client=createClient(config.url,config.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
    this.client.auth.onAuthStateChange((event,session)=>{setTimeout(()=>this.changeUser(session?.user||null),0);});
-   const {data,error}=await this.client.auth.getSession();if(error)throw error;await this.changeUser(data.session?.user||null);
+   const {data,error}=await withTimeout(this.client.auth.getSession());if(error)throw error;await this.changeUser(data.session?.user||null);
    window.addEventListener('online',()=>this.sync?.flush());
   }catch{this.state('unavailable');this.render();}
  }
@@ -35,7 +40,7 @@ export class Account {
   if(byId('login-form'))byId('login-form').onsubmit=async e=>{e.preventDefault();const btn=e.target.querySelector('button');btn.disabled=true;try{const {error}=await this.client.auth.signInWithOtp({email:byId('login-email').value.trim(),options:{emailRedirectTo:location.origin+'/'}});if(error)throw error;byId('account-message').textContent='Tjek din indbakke (og spam). Åbn linket for at logge ind. Du kan lukke denne side imens.';}catch{byId('account-message').textContent='Loginlinket kunne ikke sendes. Kontrollér e-mailen, og prøv igen senere. Hvis adressen ikke er godkendt, skal sidens ejer aktivere mailudsendelse.';}finally{btn.disabled=false;}};
   if(byId('profile-form'))byId('profile-form').onsubmit=async e=>{e.preventDefault();const name=byId('display-name').value.trim();if(!name)return;const {data,error}=await this.client.auth.updateUser({data:{display_name:name}});if(error)this.toast('Navnet kunne ikke gemmes. Prøv igen.');else{this.user=data.user;this.render();this.toast('Dit navn er gemt.');}};
   if(byId('sign-out'))byId('sign-out').onclick=async()=>{this.beforeSwitch();if(this.sync?.dirty&&!await this.sync.flush()){this.toast('Dine ændringer er ikke gemt online endnu. Synkronisér eller eksportér en backup før logout.');return;}const {error}=await this.client.auth.signOut({scope:'local'});if(error)this.toast('Kunne ikke logge ud. Prøv igen.');};
-  if(byId('sync-now'))byId('sync-now').onclick=async()=>{if(this.sync?.dirty)await this.sync.flush();else try{await this.sync.useCloud();}catch{this.state('offline');}};
+  if(byId('sync-now'))byId('sync-now').onclick=async()=>{if(!this.sync||this.status==='loading')return;if(this.sync.dirty)await this.sync.flush();else try{await this.sync.useCloud();}catch{this.state('offline');}};
   if(byId('use-cloud'))byId('use-cloud').onclick=async()=>{if(!confirm('Erstat den lokale kontoversion med dine online data? Eksportér først en backup, hvis du vil beholde lokale ændringer.'))return;try{await this.sync.useCloud();}catch{this.toast('Kunne ikke hente online data.');}};
   if(byId('import-guest'))byId('import-guest').onclick=()=>{if(this.status==='loading')return;const merged=mergeGuest(this.getProgress(),loadProgress(this.storage));this.setProgress(merged);this.save(merged);this.render();this.toast('Lokale resultater er tilføjet til din profil.');};
  }
