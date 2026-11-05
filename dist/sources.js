@@ -473,6 +473,57 @@ export const documentationSources = [
 ];
 
 documentationSources.push({name:'R · statistik',url:'https://stat.ethz.ch/R-manual/R-devel/library/stats/html/00Index.html',description:'Officiel reference til statistik, herunder sd(), lm() og aggregate().'}, {name:'R · datasættet mtcars',url:'https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html',description:'Dokumentation af det indbyggede bildatasæt mtcars. I mange af opgaverne er biler en lokal kopi af dette datasæt.'});
+teachingSources.push(...[
+  {
+    "path": "DALE26W35-main/DALE26W35PairEx.R",
+    "description": "Omregningsfunktioner med faste formler.",
+    "functions": [],
+    "downloadable": false
+  },
+  {
+    "path": "DALE26W36-main/DALE26W36PairEx.R",
+    "description": "Navngivne vektorer og datastrukturer.",
+    "functions": [],
+    "downloadable": false
+  },
+  {
+    "path": "DALE26W36-main/DALE26PairExIII.R",
+    "description": "Gruppering og opsummering med aggregate().",
+    "functions": [],
+    "downloadable": false
+  },
+  {
+    "path": "DALE26W37-main/DALE26W37PairExIII.R",
+    "description": "Sammenkobling af tabeller og beregning på målinger.",
+    "functions": [],
+    "downloadable": false
+  },
+  {
+    "path": "DALE26W39-main/DALE26W39PairExII.R",
+    "description": "Rensning af tekst, tal og korrelation.",
+    "functions": [],
+    "downloadable": false
+  },
+  {
+    "path": "DALE26W39-main/GAS.R",
+    "description": "Søgning efter gasrelaterede tabeller.",
+    "functions": [],
+    "downloadable": false
+  },
+  {
+    "path": "DALE26W44-main/step1.R",
+    "description": "Læsning af links fra HTML.",
+    "functions": [],
+    "downloadable": false
+  },
+  {
+    "path": "DALE26W44-main/DALE26W45classI.R",
+    "description": "Flydata og sammenkobling med operatører.",
+    "functions": [],
+    "downloadable": false
+  }
+]);
+
 const folderDescriptions={
  'DALE26W35':'Introduktion til R med vektorer, pakker og egne funktioner.',
  'DALEW36':'Grundlæggende datastrukturer: lister, matricer og data frames. Indeholder også pair programming, datastruktur, manglende værdier, statistik og boksplot.',
@@ -489,7 +540,32 @@ const folderDescriptions={
   'OLA3-GRP4-main':'OLA 3-gruppemateriale: indikatorer, regression, stabilitet, løkker og DMI-JSON. Træningsopgaverne bruger lokale eksempeldatasæt.',
  '':'Fælles materiale uden en overordnet mappe: tavleundervisning om JSON, tekst, filtrering og statistik samt generelle hjælpefunktioner.'
 };
-export const sourceFolders=Object.entries(folderDescriptions).map(([path,description])=>({
- path,name:path||'Fælles materiale',description,
- files:teachingSources.filter(source=>(source.path.includes('/')?source.path.split('/')[0]:'')===path)
-}));
+function sourceFolderKey(folder){
+ const week=folder.match(/^(?:DALE(?:26)?W|Uge\s*)(\d+)(?:-main)?$/i);
+ return week?'Uge '+Number(week[1]):folder;
+}
+const folders=new Map();
+for(const [path,description] of Object.entries(folderDescriptions)){
+ const key=sourceFolderKey(path);
+ const folder=folders.get(key)||{path:key,name:key||'Fælles materiale',description:'',originalPaths:[],files:[]};
+ folder.description=[folder.description,description].filter(Boolean).join(' ');
+ folder.originalPaths.push(path);
+ folders.set(key,folder);
+}
+const newWeekDescriptions={
+ 'Uge 39':'Tekstrensning, korrelation og søgning i Eurostat-materiale.',
+ 'Uge 44':'Links, HTML og behandling af flydata. Arkivet indeholder også undervisningskode fra uge 45.'
+};
+for(const file of teachingSources){
+ const path=file.path.includes('/')?file.path.split('/')[0]:'';
+ const key=sourceFolderKey(path);
+ const folder=folders.get(key)||{path:key,name:key,description:newWeekDescriptions[key]||'',originalPaths:[],files:[]};
+ if(!folder.originalPaths.includes(path))folder.originalPaths.push(path);
+ folder.files.push(file);
+ folders.set(key,folder);
+}
+export const sourceFolders=[...folders.values()].sort((a,b)=>{
+ const weekA=/^Uge \d+$/.test(a.name),weekB=/^Uge \d+$/.test(b.name);
+ if(weekA&&weekB)return Number(a.name.slice(4))-Number(b.name.slice(4));
+ return Number(weekB)-Number(weekA);
+});
