@@ -94,7 +94,8 @@ function reportsView(){
 async function previewData(){
  if(!current||busy)return;
  const ex=current,seq=++runSequence;rememberDraft();setBusy(true);
- try{const result=await runCode(ex,'invisible(lapply(mget(ls()), print))',{grade:false,status:msg=>{if(seq!==runSequence)return;runtimeStatus=msg;if($('#runtime-status'))$('#runtime-status').textContent=msg;}});if(seq!==runSequence)return;lastResult=result;$('#console-output').textContent=result.output;drawResult();toast('De klargjorte data vises i konsollen under dit svar.');$('#console-output')?.scrollIntoView({behavior:'smooth',block:'nearest'});}
+ const previewExercise=ex.previewSetup===undefined?ex:{...ex,setup:ex.previewSetup,packages:[]};
+ try{const result=await runCode(previewExercise,'invisible(lapply(mget(ls()), print))',{grade:false,status:msg=>{if(seq!==runSequence)return;runtimeStatus=msg;if($('#runtime-status'))$('#runtime-status').textContent=msg;}});if(seq!==runSequence)return;lastResult=result;$('#console-output').textContent=result.output;drawResult();toast('De klargjorte data vises i konsollen under dit svar.');$('#console-output')?.scrollIntoView({behavior:'smooth',block:'nearest'});}
  catch(error){if(seq===runSequence){feedback={type:'error',title:'Data kunne ikke vises',message:error.message};updateFeedback();}}
  finally{if(seq===runSequence)setBusy(false);}
 }
