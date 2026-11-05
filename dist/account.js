@@ -4,6 +4,7 @@ const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>'
 const labels={guest:'Gemt på denne enhed',loading:'Forbinder…',saved:'Gemt online',pending:'Afventer synkronisering',saving:'Gemmer online…',offline:'Kun lokalt · prøv igen',conflict:'Ændringer på en anden enhed',unavailable:'Online profil utilgængelig'};
 export class Account {
  constructor({storage,getProgress,setProgress,render,toast,beforeSwitch}){Object.assign(this,{storage,getProgress,setProgress,render,toast,beforeSwitch});this.status='loading';this.mode='login';}
+ syncStatusView(){return `<p data-sync-status role="status">${escape(labels[this.status])}</p>`;}
  badge(){return `<button class="profile account-link" data-nav="profile"><span class="avatar">${escape((this.user?.user_metadata?.display_name||'R')[0].toUpperCase())}</span><span>${escape(this.user?.user_metadata?.display_name|| (this.user?'Min profil':'Log ind / opret profil'))}<small data-sync-status>${labels[this.status]}</small></span><span class="online-dot"></span></button>`;}
  state(status){this.status=status;document.querySelectorAll('[data-sync-status]').forEach(el=>el.textContent=labels[status]);const conflict=document.querySelector('#sync-conflict');if(conflict)conflict.hidden=status!=='conflict';}
  async init(){
